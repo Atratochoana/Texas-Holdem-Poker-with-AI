@@ -59,10 +59,10 @@ class Table():
                 player.addCard(self._shoe.pop())
 
     def setupConfig(self):
-        with open("../Config.json", "r") as f:
+        with open("Config.json", "r") as f:
             config = json.load(f)
         self.setDefaultBal(config['startingMoney'])
-        self.setMinBet(format(default["minimumBet"]))
+        self.setMinBet(config["minimumBet"])
 
     def startRound(self):
         self.getShoe().shuffleShoe()

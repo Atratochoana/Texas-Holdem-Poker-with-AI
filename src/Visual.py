@@ -13,5 +13,5 @@ class Visuals(ctk.CTk):
         self.geometry("600x500")
         self.frame = ctk.CTkFrame()
 
-    def enterPlayer(self):
-        
+    # def enterPlayer(self):
+    #     pass
