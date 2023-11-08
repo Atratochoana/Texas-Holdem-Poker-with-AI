@@ -4,6 +4,7 @@ class Player():
         self._name = name
         self._balance = balance
         self._hand = []
+        self._gameRound = None
 
     def getName(self):
         return self._name
@@ -29,3 +30,14 @@ class Player():
     def addCard(self, card):
         self._hand.append(card)
         return
+
+    def clearHand(self):
+        self._hand = []
+
+    def setGameRound(self,GameRound):
+        self._gameRound = GameRound
+        return
+
+    def placeBet(self,Bet,previousBet):
+        if Bet <= self._balance and bet <= previousBet:
+            self._gameRound

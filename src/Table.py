@@ -1,4 +1,5 @@
 import json
+from .GameRound import GameRound
 
 
 class Table():
@@ -10,6 +11,7 @@ class Table():
         self._defaultBal = None  #will be changed instantly based on config file
         self._minimumBet = None
         self.setupConfig()
+        self._startingPlayer = 0
 
     def getPlayers(self):
         return self._players
@@ -53,10 +55,11 @@ class Table():
         self._minimumBet = bet
         return
 
-    def dealStartHand(self):
-        for x in range(2):
-            for player in self.getPlayers():
-                player.addCard(self._shoe.pop())
+    def rotateStartingPlayer(self):
+        if self._startingPlayer + 1 <= self._numPlayers:
+            self._startingPlayer += 1
+        else:
+            self._startingPlayer = 0
 
     def setupConfig(self):
         with open("Config.json", "r") as f:
@@ -65,5 +68,6 @@ class Table():
         self.setMinBet(config["minimumBet"])
 
     def startRound(self):
-        self.getShoe().shuffleShoe()
-        self.dealStartHand()
+        gameRound = GameRound(None, self, self.getShoe())
+        gameRound.start()
+        self.rotateStartingPlayer()
