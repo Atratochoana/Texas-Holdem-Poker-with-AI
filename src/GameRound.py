@@ -10,7 +10,7 @@ class GameRound():
         self._shoe = shoe
 
     def playerBet(self,bet,player):
-        
+        pass
 
     def start(self): 
         self._shoe.shuffleShoe()

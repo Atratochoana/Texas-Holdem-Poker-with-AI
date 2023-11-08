@@ -2,10 +2,13 @@ from src import Table
 from src import CardManagement
 # import Visual
 
-Table = Table.Table(CardManagement.Shoe(1))
+# Table = Table.Table(CardManagement.Shoe(1))
 # GUI = Visual.Visuals(Table)
 
-Table.startRound()
+# Table.startRound()
+
+deck = CardManagement.Deck(True,None)
+print(deck.getCards())
 
 
 
