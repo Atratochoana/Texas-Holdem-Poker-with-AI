@@ -133,11 +133,11 @@ class Shoe():
         for card in deck.getCards():
             self._shoe.append(card)
 
-    def shuffleShoe(self):
-        random.shuffle(self._shoe)
-
     def createDeck(self):
         self.addDeck(Deck(True, self))
+
+    def shuffleShoe(self):
+        random.shuffle(self._shoe)
 
     def pop(self):
         card = self.getShoe().pop()

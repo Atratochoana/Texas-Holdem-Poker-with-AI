@@ -7,9 +7,10 @@ from src import CardManagement
 
 # Table.startRound()
 
-deck = CardManagement.Deck(True,None)
-print(deck.getCards())
-
-
+shoe = CardManagement.Shoe(3)
+shoe.shuffleShoe()
+shoe.pop()
+print(len(shoe._shoe))
+print(shoe._usedCards)
 
 # to do -make actually functions for the game - add more configuration

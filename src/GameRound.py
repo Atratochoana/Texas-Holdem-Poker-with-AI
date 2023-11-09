@@ -1,11 +1,9 @@
-
-
 class GameRound():
 
     def __init__(self, startingPlayer, table, shoe):
-        self.__dict__pot = 0
+        self._pot = 0
         self._startingPlayer = startingPlayer
-        self._communityCards = []
+        self._communityCards = [None,None,None,None,None]
         self._table = table
         self._shoe = shoe
 
@@ -23,4 +21,6 @@ class GameRound():
         self.roundOne()
     
     def roundOne(self):
-        pass
+        for card in range(3):
+            self._communityCards()[card] = self._shoe.pop()
+        

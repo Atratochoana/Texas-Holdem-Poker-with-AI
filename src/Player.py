@@ -34,10 +34,10 @@ class Player():
     def clearHand(self):
         self._hand = []
 
-    def setGameRound(self,GameRound):
+    def setGameRound(self, GameRound):
         self._gameRound = GameRound
         return
 
-    def placeBet(self,Bet,previousBet):
-        if Bet <= self._balance and bet <= previousBet:
-            self._gameRound
+    def placeBet(self, Bet, previousBet):
+        if Bet <= self._balance and Bet <= previousBet:
+            self._gameRound.playerBet(Bet, self)
