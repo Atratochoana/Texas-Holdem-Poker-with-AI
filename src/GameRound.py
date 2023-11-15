@@ -7,7 +7,7 @@ class GameRound():
         self._table = table
         self._shoe = shoe
 
-    def playerBet(self,bet,player):
+    def playerAction(self,bet,player):
         pass
 
     def start(self): 
