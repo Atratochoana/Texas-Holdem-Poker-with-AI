@@ -1,13 +1,15 @@
 import json
 from .GameRound import GameRound
+from .Player import Player
+from .CardManagement import Shoe
 
 
 class Table():
 
-    def __init__(self, Shoe):
+    def __init__(self, numDecks):
         self._players = []
         self._numPlayers = len(self._players)
-        self._shoe = Shoe
+        self._shoe = Shoe(numDecks)
         self._defaultBal = None  #will be changed instantly based on config file
         self._minimumBet = None
         self.setupConfig()
@@ -55,8 +57,13 @@ class Table():
         self._minimumBet = bet
         return
 
+    def createPlayer(self, Name):
+        player = Player(Name, self._defaultBal)
+        self.addPlayer(player)
+        return
+
     def rotateStartingPlayer(self):
-        if self._startingPlayer + 1 <= self._numPlayers:
+        if self._startingPlayer + 1 < self._numPlayers:
             self._startingPlayer += 1
         else:
             self._startingPlayer = 0
@@ -71,3 +78,7 @@ class Table():
         gameRound = GameRound(None, self, self.getShoe())
         gameRound.start()
         self.rotateStartingPlayer()
+
+    def returnPlayerCards(self, PlayerIndex):
+        hand = self._players[PlayerIndex]._hand
+        return hand

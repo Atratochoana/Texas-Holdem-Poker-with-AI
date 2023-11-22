@@ -38,12 +38,15 @@ class Player():
         self._gameRound = GameRound
         return
 
-    def placeBet(self, Bet, previousBet):
-        if Bet == 0 or Bet.type() != int:
+    def placeBet(self, Bet, previousBet): 
+        if Bet == 0 or type(Bet) != int:
             return False
 
         if Bet <= self._balance and Bet <= previousBet:
-            self._gameRound.playerAction(Bet, self)
+            print(self._balance)
+            self._balance -= Bet
+            print(Bet)
+            #Player Interacts with game round
             return True
         else:
             return False
