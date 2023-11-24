@@ -23,6 +23,22 @@ class GameRound():
 
         self.roundOne()
 
-    def roundOne(self):
+    def dealFlop(self):
         for card in range(3):
             self._communityCards[card] = self._shoe.pop()
+
+    def dealTurn(self):
+        self._communityCards[3] = self._shoe.pop()
+
+    def dealRiver(self):
+        self._communityCards[4] = self._shoe.pop()
+
+    def finishCommunity(self):
+        for card in self._communityCards:
+            if card == None:
+                card = self._shoe.pop()
+
+    def calcWinner(self):
+        pass
+
+

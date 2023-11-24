@@ -46,7 +46,7 @@ class Player():
             print(self._balance)
             self._balance -= Bet
             print(Bet)
-            #Player Interacts with game round
+            self._gameRound.playerAction(Bet,previousBet)
             return True
         else:
             return False
