@@ -6,9 +6,25 @@ class GameRound():
         self._communityCards = [None, None, None, None, None]
         self._table = table
         self._shoe = shoe
+        self.nextPlayer = startingPlayer
+        self.playersOut = []
 
     def playerAction(self, bet, player):
-        pass
+        if player != self._table._players[
+                self.nextPlayer] or player in self.playersOut:
+            print("worked")
+            return
+
+        print("not worked")
+
+        if bet == False:
+            self.playersOut.append(player)
+
+        if (self.nextPlayer + 1) >= self._table._numPlayers:
+            self.dealCommunity()
+            self.nextPlayer = 0
+
+        self.nextPlayer += 1
 
     def start(self):
         self._shoe.shuffleShoe()
@@ -21,7 +37,15 @@ class GameRound():
                 self
             )  #allows for interaction between this game round and each player.
 
-        self.roundOne()
+    def dealCommunity(self):
+        if self._communityCards[0] == None:
+            self.dealFlop()
+        elif self._communityCards[3] == None:
+            self.dealTurn()
+        elif self._communityCards[4] == None:
+            self.dealRiver()
+        else:
+            self.finishCommunity()
 
     def dealFlop(self):
         for card in range(3):
@@ -40,5 +64,3 @@ class GameRound():
 
     def calcWinner(self):
         pass
-
-

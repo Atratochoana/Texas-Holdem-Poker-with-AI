@@ -75,7 +75,7 @@ class Table():
         self.setMinBet(config["minimumBet"])
 
     def startRound(self):
-        gameRound = GameRound(None, self, self.getShoe())
+        gameRound = GameRound(0, self, self.getShoe())
         gameRound.start()
         self.rotateStartingPlayer()
 

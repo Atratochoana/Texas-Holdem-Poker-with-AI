@@ -43,10 +43,8 @@ class Player():
             return False
 
         if Bet <= self._balance and Bet <= previousBet:
-            print(self._balance)
             self._balance -= Bet
-            print(Bet)
-            self._gameRound.playerAction(Bet,previousBet)
+            self._gameRound.playerAction(Bet,self)
             return True
         else:
             return False

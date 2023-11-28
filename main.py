@@ -12,8 +12,8 @@ Table.createPlayer("Palak")
 
 Table.startRound()
 
-
 Table.getPlayers()[0].placeBet(50, 80)
-print(Table.getPlayers()[0]._balance)
+Table.getPlayers()[1].placeBet(30,50)
+Table.getPlayers()[2].placeBet(50,60)
 
 # to do -make actually functions for the game - add more configuration
