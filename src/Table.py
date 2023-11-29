@@ -78,6 +78,7 @@ class Table():
         gameRound = GameRound(0, self, self.getShoe())
         gameRound.start()
         self.rotateStartingPlayer()
+        return gameRound
 
     def returnPlayerCards(self, PlayerIndex):
         hand = self._players[PlayerIndex]._hand

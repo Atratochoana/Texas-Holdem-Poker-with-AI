@@ -57,7 +57,7 @@ class Player():
             return False
 
     def fold(self):
-        self._gameRound.playerAction(None, self)
+        self._gameRound.playerAction(False, self)
         return True
 
     def check(self):
