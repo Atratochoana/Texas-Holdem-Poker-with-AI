@@ -42,7 +42,7 @@ class Player():
         if Bet == 0 or type(Bet) != int:
             return False
 
-        if Bet <= self._balance and Bet <= previousBet:
+        if Bet <= self._balance and Bet >= previousBet:
             self._balance -= Bet
             self._gameRound.playerAction(Bet,self)
             return True

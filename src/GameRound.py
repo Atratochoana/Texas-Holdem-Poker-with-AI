@@ -20,29 +20,24 @@ class GameRound():
         else:
             self._pot += bet
 
-        count = 0
-        if (self.nextPlayer + 1) >= self._table._numPlayers:
-            self.dealCommunity()
-            self.nextPlayer = -1
-
-            while self._table._players[self.nextPlayer +
-                                       count] in self.playersOut:
-                count += 1
-                if count >= self._table._numPlayers:
-                    winner = self.calcWinner()
-
-        else:
-            while self._table._players[self.nextPlayer + 1 +
-                                       count] in self.playersOut:
-                count += 1
-                if count >= self._table._numPlayers:
-                    winner = self.calcWinner()
-
-            self.nextPlayer += (1 + count)
-
         if (self.nextPlayer + 1) >= self._table._numPlayers:
             self.dealCommunity()
             self.nextPlayer = 0
+        else:
+            self.nextPlayer += 1
+        
+        count = 0
+        subCount = 0
+        while self._table._players[self.nextPlayer + count] in self.playersOut:
+            count += 1
+            subCount += 1
+            if count > self._table._numPlayers:
+                self.calcWinner()
+                break
+
+            if (self.nextPlayer + count) >= self._table._numPlayers:
+                self.nextPlayer = 0
+                subCount = 0
 
     def start(self):
         self._shoe.shuffleShoe()
@@ -79,14 +74,10 @@ class GameRound():
                 card = self._shoe.pop()
 
     def calcWinner(self):
+        print("worked")
         for player in self._table._players:
             if player in self.playersOut:
                 continue
             allCards = player._hand
             allCards += self._communityCards
-            print(allCards)
-            # allCards.append(self._communityCards[0])
-            # allCards.append(self._communityCards[1])
-            # allCards.append(self._communityCards[2])
-            # allCards.append(self._communityCards[3])
-            # allCards.append(self._communityCards[4])
+            allCards.sort()

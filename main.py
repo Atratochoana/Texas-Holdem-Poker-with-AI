@@ -13,16 +13,14 @@ Table.createPlayer("Palak")
 gameRound = Table.startRound()
 
 Table.getPlayers()[0].placeBet(50, 80)
-print(gameRound.nextPlayer)
 Table.getPlayers()[1].placeBet(30,50)
-print(gameRound.nextPlayer)
 Table.getPlayers()[2].placeBet(50,60)
-print(gameRound.nextPlayer)
 Table.getPlayers()[3].fold()
-print(gameRound.nextPlayer)
 Table.getPlayers()[0].fold()
-print(gameRound.nextPlayer)
-# print(gameRound.playersOut)
-gameRound.calcWinner()
+Table.getPlayers()[1].check()
+Table.getPlayers()[2].placeBet(100,0)
+Table.getPlayers()[0].fold()
+Table.getPlayers()[1].fold()
+
 
 
