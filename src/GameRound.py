@@ -16,6 +16,8 @@ class GameRound():
 
         if bet == False:
             self.playersOut.append(player)
+            if len(self.playersOut) == (len(self._table._players) - 1):
+                self.calcWinner()
 
         else:
             self._pot += bet
@@ -25,7 +27,7 @@ class GameRound():
             self.nextPlayer = 0
         else:
             self.nextPlayer += 1
-        
+
         count = 0
         subCount = 0
         while self._table._players[self.nextPlayer + count] in self.playersOut:
@@ -69,15 +71,54 @@ class GameRound():
         self._communityCards[4] = self._shoe.pop()
 
     def finishCommunity(self):
-        for card in self._communityCards:
-            if card == None:
-                card = self._shoe.pop()
+        for x in range(len(self._communityCards)):
+            if self._communityCards[x] == None:
+                self._communityCards[x] = self._shoe.pop()
 
     def calcWinner(self):
-        print("worked")
         for player in self._table._players:
             if player in self.playersOut:
                 continue
             allCards = player._hand
-            allCards += self._communityCards
-            allCards.sort()
+            for card in self._communityCards:
+                if card != None:
+                    allCards.append(card)
+                else:
+                    index = self._communityCards.index(card)
+                    self.finishCommunity()
+                    allCards.append(self._communityCards[index])
+            allCards.sort(key=lambda x: x._value, reverse=True)
+            for x in range(len(allCards)):
+                print(allCards[x].getName(), "", allCards[x].getValue())
+            self.handVal(allCards)
+
+    def handVal(self,hand):  #will return dict
+        handVal = {
+            "RF": 0,
+            "SF": 0,
+            "4OfKind": 0,
+            "FullHouse": 0,
+            "Flush": 0,
+            "Straight": 0,
+            "ThreeOfKind": 0,
+            "TwoPair": 0,
+            "Pair": 0,
+            "High": 0,
+        }
+        print(self.checkStraight(hand))
+        
+
+    def checkStraight(self,list):
+        straightCards = []
+        for x in range(0,len(list)-5):
+            count = 0
+            end = False
+
+            while list[x + count]._value == list[x + 1 + count] and end == False:
+                count += 1
+                if count >= 5:
+                    end = True
+                    straightCards.append(x)
+                if len(list) <= x + 1 + count:
+                    end = True
+        return straightCards

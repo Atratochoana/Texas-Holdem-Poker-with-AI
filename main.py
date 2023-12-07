@@ -12,9 +12,9 @@ Table.createPlayer("Palak")
 
 gameRound = Table.startRound()
 
-Table.getPlayers()[0].placeBet(50, 80)
-Table.getPlayers()[1].placeBet(30,50)
-Table.getPlayers()[2].placeBet(50,60)
+Table.getPlayers()[0].placeBet(50, 0)
+Table.getPlayers()[1].placeBet(30,0)
+Table.getPlayers()[2].placeBet(70,0)
 Table.getPlayers()[3].fold()
 Table.getPlayers()[0].fold()
 Table.getPlayers()[1].check()
