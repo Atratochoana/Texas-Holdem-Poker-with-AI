@@ -110,13 +110,12 @@ class GameRound():
 
     def checkStraight(self,list):
         straightCards = []
-        for x in range(0,len(list)-5):
+        for x in range(0,len(list)-4):
             count = 0
             end = False
-
-            while list[x + count]._value == list[x + 1 + count] and end == False:
+            while list[x + count]._value - 1 == list[x + 1 + count]._value and end == False:
                 count += 1
-                if count >= 5:
+                if count >= 4:
                     end = True
                     straightCards.append(x)
                 if len(list) <= x + 1 + count:

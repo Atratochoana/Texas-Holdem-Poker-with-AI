@@ -1,7 +1,6 @@
 from src import Table
 
 # from src import Visual
-
 Table = Table.Table(1)
 Table.createPlayer("Ralph")
 Table.createPlayer("Test")
@@ -13,14 +12,11 @@ Table.createPlayer("Palak")
 gameRound = Table.startRound()
 
 Table.getPlayers()[0].placeBet(50, 0)
-Table.getPlayers()[1].placeBet(30,0)
-Table.getPlayers()[2].placeBet(70,0)
+Table.getPlayers()[1].placeBet(30, 0)
+Table.getPlayers()[2].placeBet(70, 0)
 Table.getPlayers()[3].fold()
 Table.getPlayers()[0].fold()
 Table.getPlayers()[1].check()
-Table.getPlayers()[2].placeBet(100,0)
+Table.getPlayers()[2].placeBet(100, 0)
 Table.getPlayers()[0].fold()
 Table.getPlayers()[1].fold()
-
-
-
