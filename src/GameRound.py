@@ -88,27 +88,27 @@ class GameRound():
                     self.finishCommunity()
                     allCards.append(self._communityCards[index])
             allCards.sort(key=lambda x: x._value, reverse=True)
-            for x in range(len(allCards)):
-                print(allCards[x].getName(), "", allCards[x].getValue())
-            self.handVal(allCards)
+            # for x in range(len(allCards)):
+            #     print(allCards[x].getName(), "", allCards[x].getValue())
+            # self.handVal(allCards) needs to be undon!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-    def handVal(self,hand):  #will return dict
+    def handVal(self,hand):  #will return dict with highest value of respective kind, list for incase multiple of it
         handVal = {
-            "RF": 0,
-            "SF": 0,
-            "4OfKind": 0,
-            "FullHouse": 0,
-            "Flush": 0,
-            "Straight": 0,
-            "ThreeOfKind": 0,
-            "TwoPair": 0,
-            "Pair": 0,
-            "High": 0,
+            "RF": [], # false cos it can only be true or false still in list for ease
+            "SF": [], #can only be one but gonna keep it as list for ease
+            "4OfKind": [],
+            "FullHouse": [],
+            "Flush": [],
+            "Straight": [],
+            "ThreeOfKind": [],
+            "TwoPair": [],
+            "Pair": [],
+            "High": [],
         }
-        print(self.checkStraight(hand))
+        print(self.checkFour(hand))
         
 
-    def checkStraight(self,list):
+    def checkStraight(self,list): #checks for straight returns either true of false // doesnt factor in ace for 1 or 14 yet
         straightCards = []
         for x in range(0,len(list)-4):
             count = 0
@@ -120,4 +120,39 @@ class GameRound():
                     straightCards.append(x)
                 if len(list) <= x + 1 + count:
                     end = True
-        return straightCards
+
+        if len(straightCards) == 0:
+            return False
+        else:
+            return straightCards
+
+    def checkFlush(self,list): #checks for flush and returns either false for nothign or value of highest card in flush
+        sequenceCards = self.checkStraight(list)
+        if sequenceCards == False:
+            return False
+        for card in range(sequenceCards[0],sequenceCards[0] + 5):
+            if list[card]._suit != list[card + 1]._suit:
+                return False
+        return sequenceCards[0]._value
+
+    def checkRoyal(self,list,startingIndex): #checks for royal flush returns true or false
+        cVal = 14
+        suit = list[startingIndex]._suit
+        for card in range(startingIndex,startingIndex + 5):
+            if list[card]._value != cVal and list[card]._suit != suit:
+                return False
+            cVal -= 1
+        return True
+
+    def checkFour(self,list):
+        four = []
+        for card in range(0,len(list)-4):
+            for x in range(4):
+                # print(card, " ", list[card + x]._value)
+                if list[card + x]._value != list[card + x +1]._value:
+                    print(card)
+                    break
+                if x == 4:
+                    four.append(card)
+        return four
+            
