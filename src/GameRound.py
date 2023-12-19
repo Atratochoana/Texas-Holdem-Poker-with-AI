@@ -88,14 +88,35 @@ class GameRound():
                     self.finishCommunity()
                     allCards.append(self._communityCards[index])
             allCards.sort(key=lambda x: x._value, reverse=True)
-            # for x in range(len(allCards)):
-            #     print(allCards[x].getName(), "", allCards[x].getValue())
-            # self.handVal(allCards) needs to be undon!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-    def handVal(self,hand):  #will return dict with highest value of respective kind, list for incase multiple of it
+            player.handVal = self.handVal(allCards)
+        winner = []
+        for player in self._table._players:
+            if player in self.playersOut:
+                continue
+            for x in range(len(player._hand)):
+                print(player._hand[x]._value, " ", player._hand[x]._name)
+            if winner == []:
+                winner = [player]
+                continue
+            for key in winner[0].handVal:
+                value = winner[0].handVal[key]
+                if value == []:
+                    continue
+                if value == player.handVal[key]:
+                    winner.append(player)
+                if value <= player.handVal[key]:
+                    winner = [player]
+                
+        for x in range(len(winner)):
+            print(winner[x]._name)
+        
+    def handVal(
+        self, hand
+    ):  #will return dict with highest value of respective kind, list for incase multiple of it
         handVal = {
-            "RF": [], # false cos it can only be true or false still in list for ease
-            "SF": [], #can only be one but gonna keep it as list for ease
+            "RF":
+            [],  # false cos it can only be true or false still in list for ease
+            "SF": [],  #can only be one but gonna keep it as list for ease
             "4OfKind": [],
             "FullHouse": [],
             "Flush": [],
@@ -105,15 +126,115 @@ class GameRound():
             "Pair": [],
             "High": [],
         }
-        print(self.checkFour(hand))
-        
+        self.checkFour(hand)
 
-    def checkStraight(self,list): #checks for straight returns either true of false // doesnt factor in ace for 1 or 14 yet
+        if self.checkRoyal(hand, 0):
+            handVal["RF"] = [14]
+            return handVal
+        House = self.checkHouse(hand)
+        if House != False:
+            handVal["FullHouse"] = [House[0],House[1]]
+        sFlush = self.checkStraightFlush(hand)
+        if sFlush != False:
+            handVal["SF"] = [sFlush]
+        FourKind = self.checkFour(hand)
+        handVal["4OfKind"] = FourKind
+        Flush = self.checkFlush(hand)
+        if Flush != False:
+            handVal["Flush"] = hand[Flush]._value
+        Straight = self.checkStraight(hand)
+        if Straight != False:
+            handVal["Straight"] = hand[Straight]._value
+        Three = self.checkThree(hand)
+        if Three != False:
+            for x in range(len(Three)):
+                handVal["ThreeOfKind"].append(hand[Three[x]]._value)
+        Pair = self.checkTwo(hand)
+        for index in Pair:
+            handVal["Pair"].append(hand[index]._value)
+        if len(Pair) >= 2:
+            handVal["TwoPair"] = [hand[Pair[0]]._value,hand[Pair[1]]._value]
+        
+        for x in range(len(hand)-2):
+            handVal["High"].append(hand[x]._value)
+        
+        return handVal
+        
+    def checkRoyal(
+            self, list,
+            startingIndex):  #checks for royal flush returns true or false
+        cVal = 14
+        suit = list[startingIndex]._suit
+        for card in range(startingIndex, startingIndex + 5):
+            if list[card]._value != cVal or list[card]._suit != suit:
+                return False
+            cVal -= 1
+        return True
+
+    def checkStraightFlush(self, list):
+        sequenceCards = self.checkStraight(list)
+        if sequenceCards == False:
+            return False
+        for card in range(sequenceCards[0], sequenceCards[0] + 5):
+            if list[card]._suit != list[card + 1]._suit:
+                return False
+        return sequenceCards[0]._value
+
+    def checkFour(self, list):
+        four = []
+        for card in range(0, len(list) - 4):
+            for x in range(4):
+                if x == 3:
+                    four.append(card)
+                    break
+                # print(card, " ", list[card + x]._value)
+                if list[card + x]._value != list[card + x + 1]._value:
+                    break
+        return four
+
+    def checkHouse(self, list):
+        three = self.checkThree(list)
+        two = self.checkTwo(list)
+        Highest = [0,0]
+        if len(two) < 2 or len(three) < 1:
+            return False
+
+        
+        for index in two:
+            if index not in three and list[index]._value != list[three[0]]._value:
+                Highest[1] = list[index]._value
+                Highest[0] = list[three[0]]._value
+                return Highest
+        if len(three) >= 2:
+            if list[three[0]]._value != list[three[1]]._value:
+                Highest[0] = list[three[0]]._value
+                Highest[1] = list[three[1]]._value
+                return Highest
+        return False
+
+    def checkFlush(
+        self, list
+    ):  #checks for flush and returns either false = nada or value of highest card in flush
+        for index in range(len(list) - 4):
+            count = 0
+            for x in range(5):
+                if list[index]._suit != list[index + x]._suit:
+                    continue
+                else:
+                    count += 1
+                if count == 5:
+                    return index
+        return False
+
+    def checkStraight(
+        self, list
+    ):  #checks for straight returns either index of first or false // doesnt factor in ace for 1 or 14 yet
         straightCards = []
-        for x in range(0,len(list)-4):
+        for x in range(0, len(list) - 4):
             count = 0
             end = False
-            while list[x + count]._value - 1 == list[x + 1 + count]._value and end == False:
+            while list[x + count]._value - 1 == list[
+                    x + 1 + count]._value and end == False:
                 count += 1
                 if count >= 4:
                     end = True
@@ -126,33 +247,25 @@ class GameRound():
         else:
             return straightCards
 
-    def checkFlush(self,list): #checks for flush and returns either false for nothign or value of highest card in flush
-        sequenceCards = self.checkStraight(list)
-        if sequenceCards == False:
-            return False
-        for card in range(sequenceCards[0],sequenceCards[0] + 5):
-            if list[card]._suit != list[card + 1]._suit:
-                return False
-        return sequenceCards[0]._value
-
-    def checkRoyal(self,list,startingIndex): #checks for royal flush returns true or false
-        cVal = 14
-        suit = list[startingIndex]._suit
-        for card in range(startingIndex,startingIndex + 5):
-            if list[card]._value != cVal and list[card]._suit != suit:
-                return False
-            cVal -= 1
-        return True
-
-    def checkFour(self,list):
-        four = []
-        for card in range(0,len(list)-4):
-            for x in range(4):
-                # print(card, " ", list[card + x]._value)
-                if list[card + x]._value != list[card + x +1]._value:
-                    print(card)
+    def checkThree(self, list):
+        three = []
+        for card in range(0, len(list) - 2):
+            for x in range(3):
+                if x == 2:
+                    three.append(card)
                     break
-                if x == 4:
-                    four.append(card)
-        return four
-            
+                # print(card, " ", list[card + x]._value)
+                if list[card + x]._value != list[card + x + 1]._value:
+                    break
+        return three
+
+    def checkTwo(self, list):
+        two = []
+        for card in range(0, len(list) - 1):
+            for x in range(2):
+                if x == 1:
+                    two.append(card)
+                    break
+                if list[card + x]._value != list[card + x + 1]._value:
+                    break
+        return two

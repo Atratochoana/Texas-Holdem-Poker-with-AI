@@ -5,6 +5,7 @@ class Player():
         self._balance = balance
         self._hand = []
         self._gameRound = None
+        self.handVal = None
 
     def getName(self):
         return self._name
