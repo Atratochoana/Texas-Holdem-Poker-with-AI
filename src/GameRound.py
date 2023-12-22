@@ -93,19 +93,26 @@ class GameRound():
         for player in self._table._players:
             if player in self.playersOut:
                 continue
-            for x in range(len(player._hand)):
-                print(player._hand[x]._value, " ", player._hand[x]._name)
+            # print(player._hand)
+            # print(player._name)
+            # for x in range(len(player._hand)):
+            #     print(player._hand[x]._value, " ", player._hand[x]._name)
             if winner == []:
                 winner = [player]
+                print("1",player._name)
                 continue
             for key in winner[0].handVal:
+                # print(key)
                 value = winner[0].handVal[key]
                 if value == []:
-                    continue
+                    break
                 if value == player.handVal[key]:
                     winner.append(player)
+                    break
                 if value <= player.handVal[key]:
+                    print("2,",player._name)
                     winner = [player]
+                    break
                 
         for x in range(len(winner)):
             print(winner[x]._name)
@@ -144,7 +151,7 @@ class GameRound():
             handVal["Flush"] = hand[Flush]._value
         Straight = self.checkStraight(hand)
         if Straight != False:
-            handVal["Straight"] = hand[Straight]._value
+            handVal["Straight"] = hand[Straight[0]]._value
         Three = self.checkThree(hand)
         if Three != False:
             for x in range(len(Three)):
