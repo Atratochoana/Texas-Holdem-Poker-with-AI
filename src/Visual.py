@@ -17,16 +17,21 @@ class Visuals(ctk.CTk):
         
         self.actionBarFrame = ctk.CTkFrame(self,width=360)
         self.actionBarFrame.grid(row=3, column=1,columnspan=2, padx=100, pady=(20, 10), sticky="s")
-        self.foldButton = ctk.CTkButton(self.actionBarFrame)
+        self.foldButton = ctk.CTkButton(self.actionBarFrame,text="bet")
         self.foldButton.grid(row=0, column=0, pady=(10, 0), sticky="")
-        self.betButton = ctk.CTkButton(self.actionBarFrame)
+        self.betButton = ctk.CTkButton(self.actionBarFrame,text="check")
         self.betButton.grid(row=0, column=1, pady=(10, 0), sticky="")
-        self.checkButton = ctk.CTkButton(self.actionBarFrame)
+        self.checkButton = ctk.CTkButton(self.actionBarFrame,text="fold")
         self.checkButton.grid(row=0, column=2, pady=(10, 0), sticky="")
         
 
     def enterPlayer(self):
         pass
+
+    def betCallBack(self):
+        self.table._players[0]
+
+
 
 class settingsButton(ctk.CTkButton):
     def __init__(self, master, **kwargs):
@@ -36,9 +41,7 @@ class settingsButton(ctk.CTkButton):
     def callBack(self):
         print("worked")
 
-class actionBar(ctk.CTkFrame):
-    def __init__(self, master, **kwargs):
-        pass
+
 
 
 
