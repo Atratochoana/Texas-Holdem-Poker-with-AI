@@ -138,10 +138,10 @@ class GameRound():
         if sFlush != False:
             handVal["SF"] = [sFlush]
         FourKind = self.checkFour(hand)
-        handVal["4OfKind"] = FourKind
+        handVal["4OfKind"] = hand[FourKind]
         Flush = self.checkFlush(hand)
         if Flush != False:
-            handVal["Flush"] = hand[Flush]._value
+            handVal["Flush"] = hand[Flush]
         Straight = self.checkStraight(hand)
         if Straight != False:
             handVal["Straight"] = hand[Straight[0]]._value
@@ -178,16 +178,15 @@ class GameRound():
         for card in range(sequenceCards[0], sequenceCards[0] + 5):
             if list[card]._suit != list[card + 1]._suit:
                 return False
-        return sequenceCards[0]._value
+        return list[sequenceCards[0]]._value
 
     def checkFour(self, list):
-        four = []
+        four = False
         for card in range(0, len(list) - 4):
             for x in range(4):
                 if x == 3:
-                    four.append(card)
+                    four = list[card]._value
                     break
-                # print(card, " ", list[card + x]._value)
                 if list[card + x]._value != list[card + x + 1]._value:
                     break
         return four
@@ -223,25 +222,25 @@ class GameRound():
                 else:
                     count += 1
                 if count == 5:
-                    return index
+                    return list[index]._value
         return False
 
     def checkStraight(
         self, list
     ):  #checks for straight returns either index of first or false // doesnt factor in ace for 1 or 14 yet
         straightCards = []
-        for x in range(0, len(list) - 4):
+        for x in range(0, len(list) - 5):
             count = 0
             end = False
             while list[x + count]._value - 1 == list[
                     x + 1 + count]._value and end == False:
                 count += 1
-                if count == 5:
+                if count == 4:
                     end = True
                     straightCards.append(x)
                 if len(list) <= x + 1 + count:
                     end = True
-
+                
         if len(straightCards) == 0:
             return False
         else:
