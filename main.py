@@ -1,4 +1,4 @@
-from src import Table
+Mb from src import Table
 from src import CardManagement
 from src import Visual
 
