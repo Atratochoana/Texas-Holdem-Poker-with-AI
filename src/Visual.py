@@ -58,16 +58,16 @@ class Visuals(ctk.CTk):
         print("check")
 
 
-# class settingsButton(ctk.CTkButton):
+class settingsButton(ctk.CTkButton):
 
-#     def __init__(self, master, **kwargs):
-#         super().__init__(master, **kwargs)
+    def __init__(self, master, **kwargs):
+        super().__init__(master, **kwargs)
 
-#     def callBack(self):
-#         print("worked")
+    def callBack(self):
+        print("worked")
 
 
-# class actionBar(ctk.CTkFrame):
+class actionBar(ctk.CTkFrame):
 
-#     def __init__(self, master, **kwargs):
-#         pass
+    def __init__(self, master, **kwargs):
+        pass
