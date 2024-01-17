@@ -3,8 +3,8 @@ from src import CardManagement
 from src import Visual
 
 Table = Table.Table(1)
-Table.createPlayer("User")
-# Table.createPlayer("Mang Ye")
+Table.createPlayer("Ralph")
+Table.createPlayer("Mang Ye")
 # Table.createPlayer("Gabby")
 # Table.createPlayer("Palak")
 
@@ -12,7 +12,7 @@ GUI = Visual.Visuals(Table)
 GUI.attributes("-fullscreen", False)
 GUI.mainloop()
 
-# gameRound = Table.startRound()
+gameRound = Table.startRound()
 
 # Table.getPlayers()[0].placeBet(50, 0)
 # Table.getPlayers()[1].placeBet(30, 0)
@@ -22,4 +22,12 @@ GUI.mainloop()
 # Table.getPlayers()[2].placeBet(100, 0)
 # Table.getPlayers()[0].fold()
 # Table.getPlayers()[1].placeBet(300,0)
-# gameRound.calcWinner()
+# testHand = [
+#     CardManagement.Card("spades",14,"Ace",None),
+#     CardManagement.Card("Heart",14,"Ace",None),
+#     CardManagement.Card("Heart",14,"Ace",None),
+#     CardManagement.Card("Heart",12,"Ace",None),
+#     CardManagement.Card("Heart",12,"Ace",None),
+#     CardManagement.Card("Heart",12,"Ace",None),
+#     CardManagement.Card("Heart",9,"Ace",None),
+#            ]
