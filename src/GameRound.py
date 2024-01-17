@@ -18,7 +18,6 @@ class GameRound():
             self.playersOut.append(player)
             if len(self.playersOut) == (len(self._table._players) - 1):
                 self.calcWinner()
-
         else:
             self._pot += bet
 

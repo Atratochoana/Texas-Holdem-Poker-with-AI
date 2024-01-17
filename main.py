@@ -7,12 +7,13 @@ Table.createPlayer("Ralph")
 Table.createPlayer("Mang Ye")
 # Table.createPlayer("Gabby")
 # Table.createPlayer("Palak")
+gameRound = Table.startRound()
 
 GUI = Visual.Visuals(Table)
 GUI.attributes("-fullscreen", False)
 GUI.mainloop()
 
-gameRound = Table.startRound()
+
 
 # Table.getPlayers()[0].placeBet(50, 0)
 # Table.getPlayers()[1].placeBet(30, 0)

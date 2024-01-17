@@ -48,14 +48,13 @@ class Visuals(ctk.CTk):
         pass
 
     def betCallBack(self):
-        print("bet")
+        self.table.getPlayers()[0].placeBet(self.entry.get(), 0)
 
     def foldCallBack(self):
-        self.table.getPlayers()[0].placeBet(self.entry.cget("textvariable"), 0)
-        print(self.entry.cget("textvariable"))
+        self.table.getPlayers()[0].fold()
 
     def checkCallBack(self):
-        print("check")
+        self.table.getPlayers()[0].check()
 
 
 class settingsButton(ctk.CTkButton):
