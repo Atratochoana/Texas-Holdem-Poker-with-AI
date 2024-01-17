@@ -1,10 +1,10 @@
-from src import Table
+Mb from src import Table
 from src import CardManagement
 from src import Visual
 
 Table = Table.Table(1)
-# Table.createPlayer("Ralph")
-# Table.createPlayer("Mang Ye")
+Table.createPlayer("Ralph")
+Table.createPlayer("Mang Ye")
 # Table.createPlayer("Gabby")
 # Table.createPlayer("Palak")
 
@@ -31,4 +31,3 @@ gameRound = Table.startRound()
 #     CardManagement.Card("Heart",12,"Ace",None),
 #     CardManagement.Card("Heart",9,"Ace",None),
 #            ]
-
