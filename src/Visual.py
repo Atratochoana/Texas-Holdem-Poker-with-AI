@@ -1,4 +1,7 @@
 import customtkinter as ctk
+from PIL import ImageTk, Image
+import os
+
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
@@ -43,6 +46,8 @@ class Visuals(ctk.CTk):
         self.entry = ctk.CTkEntry(self.actionBarFrame,
                                   placeholder_text="Bet amount")
         self.entry.grid(row=1, column=1, padx=10, pady=(10, 0), sticky="sw")
+        self.cardImages = cardImages(self)
+        self.cardImages.grid(row=1, column=1, padx=10, pady=(10, 0), sticky="sw")
 
     def enterPlayer(self):
         pass
@@ -64,6 +69,13 @@ class settingsButton(ctk.CTkButton):
 
     def callBack(self):
         print("worked")
+
+class cardImages(ctk.CTkFrame):
+    def __init__(self, master, **kwargs):
+        super().__init__(master, **kwargs)
+        card1img = ImageTk.PhotoImage(Image.open("src\Assets\Cards\card_back.png"))
+        card1 = ctk.CTkLabel(self,image=card1img)
+        card1.grid(row=0, column=0, padx=10, pady=(10, 0), sticky="sw")
 
 
 class actionBar(ctk.CTkFrame):
