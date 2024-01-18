@@ -78,8 +78,10 @@ class Visuals(ctk.CTk):
         gameRound = self.table.startRound()
         self._gameRound = gameRound
         self._gameRound.start()
-        self.cardImages.upd1(self.table._players[0]._hand[0]._suit,self.table._players[0]._hand[0]._value)
-        self.cardImages.upd2(self.table._players[0]._hand[1]._suit,self.table._players[0]._hand[1]._value)
+        self.cardImages.upd1(self.table._players[0]._hand[0]._suit,
+                             self.table._players[0]._hand[0]._value)
+        self.cardImages.upd2(self.table._players[0]._hand[1]._suit,
+                             self.table._players[0]._hand[1]._value)
 
         return
 
@@ -95,9 +97,9 @@ class cardImages(ctk.CTkFrame):
             size=(64, 64))
         self.card1 = ctk.CTkLabel(self, image=card1img, text="")
         self.card1.grid(row=1, column=1, padx=10, pady=(10, 0), sticky="sw")
-        card2img = ctk.CTkImage(light_image=Image.open(
-            "src/Assets/Cards/card_back.png"),
-                                size=(64, 64))
+        card2img = ctk.CTkImage(
+            light_image=Image.open("src/Assets/Cards/card_back.png"),
+            size=(64, 64))
         self.card2 = ctk.CTkLabel(self, image=card2img, text="")
         self.card2.grid(row=1, column=3, padx=10, pady=(10, 0), sticky="sw")
 
@@ -185,7 +187,82 @@ class cardImages(ctk.CTkFrame):
 
         self.card3.configure(
             image=ctk.CTkImage(light_image=Image.open(root), size=(64, 64)))
-        
+
+    def upd4(self, suit, value):
+        root = "src/Assets/Cards/" + suit + "/card_" + suit + "s_"
+        if value <= 9:
+            root += "0" + str(value) + ".png"
+        else:
+            if value == 10:
+                root += str(value) + ".png"
+            elif value == 11:
+                root += "J" + ".png"
+            elif value == 12:
+                root += "Q" + ".png"
+            elif value == 13:
+                root += "K" + ".png"
+            elif value == 14:
+                root += "A" + ".png"
+
+        self.card4.configure(
+            image=ctk.CTkImage(light_image=Image.open(root), size=(64, 64)))
+
+    def upd5(self, suit, value):
+        root = "src/Assets/Cards/" + suit + "/card_" + suit + "s_"
+        if value <= 9:
+            root += "0" + str(value) + ".png"
+        else:
+            if value == 10:
+                root += str(value) + ".png"
+            elif value == 11:
+                root += "J" + ".png"
+            elif value == 12:
+                root += "Q" + ".png"
+            elif value == 13:
+                root += "K" + ".png"
+            elif value == 14:
+                root += "A" + ".png"
+
+        self.card5.configure(
+            image=ctk.CTkImage(light_image=Image.open(root), size=(64, 64)))
+
+    def upd6(self, suit, value):
+        root = "src/Assets/Cards/" + suit + "/card_" + suit + "s_"
+        if value <= 9:
+            root += "0" + str(value) + ".png"
+        else:
+            if value == 10:
+                root += str(value) + ".png"
+            elif value == 11:
+                root += "J" + ".png"
+            elif value == 12:
+                root += "Q" + ".png"
+            elif value == 13:
+                root += "K" + ".png"
+            elif value == 14:
+                root += "A" + ".png"
+
+        self.card6.configure(
+            image=ctk.CTkImage(light_image=Image.open(root), size=(64, 64)))
+
+    def upd7(self, suit, value):
+        root = "src/Assets/Cards/" + suit + "/card_" + suit + "s_"
+        if value <= 9:
+            root += "0" + str(value) + ".png"
+        else:
+            if value == 10:
+                root += str(value) + ".png"
+            elif value == 11:
+                root += "J" + ".png"
+            elif value == 12:
+                root += "Q" + ".png"
+            elif value == 13:
+                root += "K" + ".png"
+            elif value == 14:
+                root += "A" + ".png"
+
+        self.card7.configure(
+            image=ctk.CTkImage(light_image=Image.open(root), size=(64, 64)))
 
 
 class actionBar(ctk.CTkFrame):
