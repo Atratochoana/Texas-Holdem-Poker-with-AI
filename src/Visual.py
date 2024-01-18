@@ -76,12 +76,22 @@ class Visuals(ctk.CTk):
         if self._gameRound != None:
             return
         gameRound = self.table.startRound()
+        #starts the gameRound by running all the functions
         self._gameRound = gameRound
         self._gameRound.start()
+        self._gameRound.dealCommunity()
+        #update the hand card visuals
         self.cardImages.upd1(self.table._players[0]._hand[0]._suit,
                              self.table._players[0]._hand[0]._value)
         self.cardImages.upd2(self.table._players[0]._hand[1]._suit,
                              self.table._players[0]._hand[1]._value)
+        #update the community cards
+        self.cardImages.upd3(self._gameRound._communityCards[0]._suit,
+                             self._gameRound._communityCards[0]._value)
+        self.cardImages.upd4(self._gameRound._communityCards[1]._suit,
+                             self._gameRound._communityCards[1]._value)
+        self.cardImages.upd5(self._gameRound._communityCards[2]._suit,
+                             self._gameRound._communityCards[2]._value)
 
         return
 
