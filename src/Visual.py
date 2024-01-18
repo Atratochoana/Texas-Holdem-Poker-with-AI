@@ -51,8 +51,14 @@ class Visuals(ctk.CTk):
                              padx=10,
                              pady=(10, 0),
                              sticky="sw")
-        self.startButton = ctk.CTkButton(self,command=self.startButtonCallBack)
-        self.startButton.grid(row=1,column=0,padx=10,pady=(10,0),sticky="sw")
+        self.startButton = ctk.CTkButton(self,
+                                         text="start",
+                                         command=self.startButtonCallBack)
+        self.startButton.grid(row=1,
+                              column=0,
+                              padx=10,
+                              pady=(10, 0),
+                              sticky="sw")
 
     def enterPlayer(self):
         pass
@@ -69,19 +75,13 @@ class Visuals(ctk.CTk):
     def startButtonCallBack(self):
         if self._gameRound != None:
             return
-        print("worked")
         gameRound = self.table.startRound()
         self._gameRound = gameRound
+        self._gameRound.start()
+        self.cardImages.upd1(self.table._players[0]._hand[0]._suit,self.table._players[0]._hand[0]._value)
+        self.cardImages.upd2(self.table._players[0]._hand[1]._suit,self.table._players[0]._hand[1]._value)
+
         return
-
-
-class settingsButton(ctk.CTkButton):
-
-    def __init__(self, master, **kwargs):
-        super().__init__(master, **kwargs)
-
-    def callBack(self):
-        print("worked")
 
 
 class cardImages(ctk.CTkFrame):
@@ -93,44 +93,111 @@ class cardImages(ctk.CTkFrame):
         card1img = ctk.CTkImage(
             light_image=Image.open("src/Assets/Cards/card_back.png"),
             size=(64, 64))
-        card1 = ctk.CTkLabel(self, image=card1img, text="")
-        card1.grid(row=1, column=1, padx=10, pady=(10, 0), sticky="sw")
-        card2img = ctk.CTkImage(
-            light_image=Image.open("src/Assets/Cards/diamond/card_diamonds_02.png"),
-            size=(64, 64))
-        card2 = ctk.CTkLabel(self, image=card2img, text="")
-        card2.grid(row=1, column=3, padx=10, pady=(10, 0), sticky="sw")
+        self.card1 = ctk.CTkLabel(self, image=card1img, text="")
+        self.card1.grid(row=1, column=1, padx=10, pady=(10, 0), sticky="sw")
+        card2img = ctk.CTkImage(light_image=Image.open(
+            "src/Assets/Cards/card_back.png"),
+                                size=(64, 64))
+        self.card2 = ctk.CTkLabel(self, image=card2img, text="")
+        self.card2.grid(row=1, column=3, padx=10, pady=(10, 0), sticky="sw")
 
         #community cards
 
         card3img = ctk.CTkImage(
             light_image=Image.open("src/Assets/Cards/card_back.png"),
             size=(64, 64))
-        card3 = ctk.CTkLabel(self, image=card3img, text="")
-        card3.grid(row=0, column=0, padx=10, pady=(10, 0), sticky="sw")
+        self.card3 = ctk.CTkLabel(self, image=card3img, text="")
+        self.card3.grid(row=0, column=0, padx=10, pady=(10, 0), sticky="sw")
         card4img = ctk.CTkImage(
             light_image=Image.open("src/Assets/Cards/card_back.png"),
             size=(64, 64))
-        card4 = ctk.CTkLabel(self, image=card4img, text="")
-        card4.grid(row=0, column=1, padx=10, pady=(10, 0), sticky="sw")
+        self.card4 = ctk.CTkLabel(self, image=card4img, text="")
+        self.card4.grid(row=0, column=1, padx=10, pady=(10, 0), sticky="sw")
         card5img = ctk.CTkImage(
             light_image=Image.open("src/Assets/Cards/card_back.png"),
             size=(64, 64))
-        card5 = ctk.CTkLabel(self, image=card5img, text="")
-        card5.grid(row=0, column=2, padx=10, pady=(10, 0), sticky="sw")
+        self.card5 = ctk.CTkLabel(self, image=card5img, text="")
+        self.card5.grid(row=0, column=2, padx=10, pady=(10, 0), sticky="sw")
         card6img = ctk.CTkImage(
             light_image=Image.open("src/Assets/Cards/card_back.png"),
             size=(64, 64))
-        card6 = ctk.CTkLabel(self, image=card6img, text="")
-        card6.grid(row=0, column=3, padx=10, pady=(10, 0), sticky="sw")
+        self.card6 = ctk.CTkLabel(self, image=card6img, text="")
+        self.card6.grid(row=0, column=3, padx=10, pady=(10, 0), sticky="sw")
         card7img = ctk.CTkImage(
             light_image=Image.open("src/Assets/Cards/card_back.png"),
             size=(64, 64))
-        card7 = ctk.CTkLabel(self, image=card7img, text="")
-        card7.grid(row=0, column=4, padx=10, pady=(10, 0), sticky="sw")
+        self.card7 = ctk.CTkLabel(self, image=card7img, text="")
+        self.card7.grid(row=0, column=4, padx=10, pady=(10, 0), sticky="sw")
+
+    def upd1(self, suit, value):
+        root = "src/Assets/Cards/" + suit + "/card_" + suit + "s_"
+        if value <= 9:
+            root += "0" + str(value) + ".png"
+        else:
+            if value == 10:
+                root += str(value) + ".png"
+            elif value == 11:
+                root += "J" + ".png"
+            elif value == 12:
+                root += "Q" + ".png"
+            elif value == 13:
+                root += "K" + ".png"
+            elif value == 14:
+                root += "A" + ".png"
+
+        self.card1.configure(
+            image=ctk.CTkImage(light_image=Image.open(root), size=(64, 64)))
+
+    def upd2(self, suit, value):
+        root = "src/Assets/Cards/" + suit + "/card_" + suit + "s_"
+        if value <= 9:
+            root += "0" + str(value) + ".png"
+        else:
+            if value == 10:
+                root += str(value) + ".png"
+            elif value == 11:
+                root += "J" + ".png"
+            elif value == 12:
+                root += "Q" + ".png"
+            elif value == 13:
+                root += "K" + ".png"
+            elif value == 14:
+                root += "A" + ".png"
+
+        self.card2.configure(
+            image=ctk.CTkImage(light_image=Image.open(root), size=(64, 64)))
+
+    def upd3(self, suit, value):
+        root = "src/Assets/Cards/" + suit + "/card_" + suit + "s_"
+        if value <= 9:
+            root += "0" + str(value) + ".png"
+        else:
+            if value == 10:
+                root += str(value) + ".png"
+            elif value == 11:
+                root += "J" + ".png"
+            elif value == 12:
+                root += "Q" + ".png"
+            elif value == 13:
+                root += "K" + ".png"
+            elif value == 14:
+                root += "A" + ".png"
+
+        self.card3.configure(
+            image=ctk.CTkImage(light_image=Image.open(root), size=(64, 64)))
+        
 
 
 class actionBar(ctk.CTkFrame):
 
     def __init__(self, master, **kwargs):
         pass
+
+
+class settingsButton(ctk.CTkButton):
+
+    def __init__(self, master, **kwargs):
+        super().__init__(master, **kwargs)
+
+    def callBack(self):
+        print("worked")
