@@ -7,7 +7,7 @@ Table.createPlayer("Ralph")
 Table.createPlayer("Mang Ye")
 # Table.createPlayer("Gabby")
 # Table.createPlayer("Palak")
-gameRound = Table.startRound()
+
 
 GUI = Visual.Visuals(Table)
 GUI.attributes("-fullscreen", False)
