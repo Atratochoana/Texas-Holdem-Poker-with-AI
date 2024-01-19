@@ -59,6 +59,13 @@ class Visuals(ctk.CTk):
                               padx=10,
                               pady=(10, 0),
                               sticky="sw")
+        self.info = infoLabales(self)
+        self.info.grid(row=2,
+                       columnspan=2,
+                       column=1,
+                       padx=10,
+                       pady=(10, 0),
+                       sticky="sw")
 
     def enterPlayer(self):
         pass
@@ -93,8 +100,25 @@ class Visuals(ctk.CTk):
         self.cardImages.upd5(self._gameRound._communityCards[2]._suit,
                              self._gameRound._communityCards[2]._value)
 
+        print(self._gameRound.nextPlayer)
+        self.info.updBal(self.table._players[0]._balance)
+
         return
 
+class infoLabales(ctk.CTkFrame):
+    def __init__(self,master,**kwargs):
+        super().__init__(master,**kwargs)
+        self.width = 360
+
+        self.potLabel = ctk.CTkLabel(self,text="Pot: 00000")
+        self.potLabel.grid(row=0,column=0,padx=10,pady=(10,0),sticky="sw")
+        self.lastBetLabel = ctk.CTkLabel(self,text="LastBet: 00000")
+        self.lastBetLabel.grid(row=0,column=1,padx=10,pady=(10,0),sticky="sw")
+        self.balanceLabel = ctk.CTkLabel(self,text="Balance: 00000")
+        self.balanceLabel.grid(row=0,column=2,padx=10,pady=(10,0),sticky="sw")
+
+    def updBal(self,balance):
+        self.balanceLabel.configure(text=f"Balance: {balance}")
 
 class cardImages(ctk.CTkFrame):
 
@@ -274,6 +298,8 @@ class cardImages(ctk.CTkFrame):
         self.card7.configure(
             image=ctk.CTkImage(light_image=Image.open(root), size=(64, 64)))
 
+    
+
 
 class actionBar(ctk.CTkFrame):
 
@@ -285,6 +311,11 @@ class settingsButton(ctk.CTkButton):
 
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
+        self.master = master
+        self.configure(command=self.callBack)
 
     def callBack(self):
-        print("worked")
+        dialog = ctk.CTkInputDialog(text="Action: int = bet, F = fold, C = check",title="cheater")
+        text = dialog.get_input()
+        if str(text) == "F":
+            print(self.master._gameRound._nextPlayer)
