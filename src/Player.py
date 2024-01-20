@@ -39,7 +39,8 @@ class Player():
         self._gameRound = GameRound
         return
 
-    def placeBet(self, Bet, previousBet): 
+    def placeBet(self, Bet, previousBet):
+        print(f"{self._name}: betted") 
         if Bet == 0 or type(Bet) != int:
             return False
 
@@ -51,6 +52,7 @@ class Player():
             return False
 
     def call(self, previousBet):
+        print(f"{self._name}: called")
         if self._balance <= previousBet:
             self._gameRound.playerAction(previousBet, self)
             return True
@@ -58,9 +60,11 @@ class Player():
             return False
 
     def fold(self):
+        print(f"{self._name}: folded")
         self._gameRound.playerAction(False, self)
         return True
 
     def check(self):
+        print(f"{self._name}: checked")
         self._gameRound.playerAction(0, self)
         return True

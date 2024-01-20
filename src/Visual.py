@@ -66,6 +66,13 @@ class Visuals(ctk.CTk):
                        padx=10,
                        pady=(10, 0),
                        sticky="sw")
+        self.addPlayer = addPlayer(self,text="Add Player")
+        self.addPlayer.grid(row=3,
+                       column=0,
+                       padx=10,
+                       pady=(10, 0),
+                       sticky="sw")
+
 
     def enterPlayer(self):
         pass
@@ -299,12 +306,19 @@ class cardImages(ctk.CTkFrame):
             image=ctk.CTkImage(light_image=Image.open(root), size=(64, 64)))
 
     
-
-
-class actionBar(ctk.CTkFrame):
+class addPlayer(ctk.CTkButton):
 
     def __init__(self, master, **kwargs):
-        pass
+        super().__init__(master, **kwargs)
+        self.master = master
+        self.configure(command=self.callBack)
+
+    def callBack(self):
+        dialog = ctk.CTkInputDialog(text="Enter the name of the Player",title="add Player")
+        text = dialog.get_input()
+        self.master.table.createPlayer(text)
+        for player in self.master.table._players:
+            print(player._name)
 
 
 class settingsButton(ctk.CTkButton):
@@ -317,5 +331,10 @@ class settingsButton(ctk.CTkButton):
     def callBack(self):
         dialog = ctk.CTkInputDialog(text="Action: int = bet, F = fold, C = check",title="cheater")
         text = dialog.get_input()
-        if str(text) == "F":
-            print(self.master._gameRound._nextPlayer)
+        if str(text).upper() == "F":
+            self.master.table.getPlayers()[self.master._gameRound.nextPlayer].fold()
+        elif str(text).upper() == "C":
+            self.master.table.getPlayers()[self.master._gameRound.nextPlayer].check()
+        else:
+            self.master.table.getPlayers()[self.master._gameRound.nextPlayer].bet(int(text))
+        

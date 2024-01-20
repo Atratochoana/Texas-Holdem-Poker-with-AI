@@ -3,12 +3,9 @@ from src import CardManagement
 from src import Visual
 
 Table = Table.Table(1)
-Table.createPlayer("Ralph")
-Table.createPlayer("Mang Ye")
-# Table.createPlayer("Gabby")
-# Table.createPlayer("Palak")
+Table.createPlayer("self")
 
-
+print(Table.getPlayers())
 GUI = Visual.Visuals(Table)
 GUI.attributes("-fullscreen", False)
 GUI.mainloop()
