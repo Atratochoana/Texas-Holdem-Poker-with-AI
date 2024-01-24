@@ -8,6 +8,7 @@ class GameRound():
         self._shoe = shoe
         self.nextPlayer = startingPlayer
         self.playersOut = []
+        self.lastBet = 0
 
     def playerAction(self, bet, player):
         if player != self._table._players[
@@ -20,6 +21,7 @@ class GameRound():
                 self.calcWinner()
         else:
             self._pot += bet
+            self.lastBet = bet
 
         if (self.nextPlayer + 1) >= self._table._numPlayers:
             self.dealCommunity()

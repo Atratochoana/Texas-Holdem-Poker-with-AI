@@ -5,7 +5,6 @@ from src import Visual
 Table = Table.Table(1)
 Table.createPlayer("self")
 
-print(Table.getPlayers())
 GUI = Visual.Visuals(Table)
 GUI.attributes("-fullscreen", False)
 GUI.mainloop()

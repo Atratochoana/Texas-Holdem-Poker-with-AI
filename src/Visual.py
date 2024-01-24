@@ -336,5 +336,5 @@ class settingsButton(ctk.CTkButton):
         elif str(text).upper() == "C":
             self.master.table.getPlayers()[self.master._gameRound.nextPlayer].check()
         else:
-            self.master.table.getPlayers()[self.master._gameRound.nextPlayer].bet(int(text))
+            self.master.table.getPlayers()[self.master._gameRound.nextPlayer].placeBet(int(text),self.master._gameRound.lastBet)
         
