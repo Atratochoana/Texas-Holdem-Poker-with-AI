@@ -335,6 +335,18 @@ class settingsButton(ctk.CTkButton):
             self.master.table.getPlayers()[self.master._gameRound.nextPlayer].fold()
         elif str(text).upper() == "C":
             self.master.table.getPlayers()[self.master._gameRound.nextPlayer].check()
+        elif str(text).upper() == "CARD":
+            for card in self.master.table.getPlayers()[self.master._gameRound.nextPlayer]._hand:
+                print(str(card._value) + " : " + str(card._suit))
         else:
             self.master.table.getPlayers()[self.master._gameRound.nextPlayer].placeBet(int(text),self.master._gameRound.lastBet)
+            potText = self.master.info.potLabel.cget("text")
+            potVal = int(potText[5:]) + int(text)
+            potText = potText[:5]
+            if len(str(potVal)) >= 5:
+                potText += str(potVal)
+            else:
+                potText += "0" * (5 - len(str(potVal)))
+                potText += str(potVal)
+            self.master.info.potLabel.configure(text=potText)
         
