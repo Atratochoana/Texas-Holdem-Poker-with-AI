@@ -78,7 +78,17 @@ class Visuals(ctk.CTk):
         pass
 
     def betCallBack(self):
-        self.table.getPlayers()[0].placeBet(self.entry.get(), 0)
+        text = self.entry.get()
+        self.table.getPlayers()[0].placeBet(int(text), 0)
+        potText = self.info.potLabel.cget("text")
+        potVal = int(potText[5:]) + int(text)
+        potText = potText[:5]
+        if len(str(potVal)) >= 5:
+            potText += str(potVal)
+        else:
+            potText += "0" * (5 - len(str(potVal)))
+            potText += str(potVal)
+        self.info.potLabel.configure(text=potText)
 
     def foldCallBack(self):
         self.table.getPlayers()[0].fold()
@@ -316,7 +326,9 @@ class addPlayer(ctk.CTkButton):
     def callBack(self):
         dialog = ctk.CTkInputDialog(text="Enter the name of the Player",title="add Player")
         text = dialog.get_input()
+        text = f"bot {len(self.master.table.getPlayers())}"
         self.master.table.createPlayer(text)
+        print("\nNew player list:")
         for player in self.master.table._players:
             print(player._name)
 
