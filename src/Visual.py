@@ -90,6 +90,8 @@ class Visuals(ctk.CTk):
             potText += str(potVal)
         self.info.potLabel.configure(text=potText)
 
+        
+
     def foldCallBack(self):
         self.table.getPlayers()[0].fold()
 
@@ -326,7 +328,7 @@ class addPlayer(ctk.CTkButton):
     def callBack(self):
         dialog = ctk.CTkInputDialog(text="Enter the name of the Player",title="add Player")
         text = dialog.get_input()
-        text = f"bot {len(self.master.table.getPlayers())}"
+        #text = f"bot {len(self.master.table.getPlayers())}"
         self.master.table.createPlayer(text)
         print("\nNew player list:")
         for player in self.master.table._players:
