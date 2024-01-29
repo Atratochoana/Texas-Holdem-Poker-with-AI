@@ -13,6 +13,7 @@ class Visuals(ctk.CTk):
         self._gameRound = None
         self._testMode = False
         self.table = table
+        self.table._visuals = self
         self.title("Poker")
         self.geometry("1440x810")
 
@@ -66,20 +67,21 @@ class Visuals(ctk.CTk):
                        padx=10,
                        pady=(10, 0),
                        sticky="sw")
-        self.addPlayer = addPlayer(self,text="Add Player")
+        self.addPlayer = addPlayer(self, text="Add Player")
         self.addPlayer.grid(row=3,
-                       column=0,
-                       padx=10,
-                       pady=(10, 0),
-                       sticky="sw")
-
+                            column=0,
+                            padx=10,
+                            pady=(10, 0),
+                            sticky="sw")
 
     def enterPlayer(self):
         pass
 
     def betCallBack(self):
         text = self.entry.get()
-        self.table.getPlayers()[0].placeBet(int(text), 0)
+        text = 30
+        if self.table.getPlayers()[0].placeBet(int(text), 0) == False:
+            return
         potText = self.info.potLabel.cget("text")
         potVal = int(potText[5:]) + int(text)
         potText = potText[:5]
@@ -89,8 +91,9 @@ class Visuals(ctk.CTk):
             potText += "0" * (5 - len(str(potVal)))
             potText += str(potVal)
         self.info.potLabel.configure(text=potText)
-
-        
+        balVal = self.table.getPlayers()[0]._balance
+        balText = "Balance: " + str(balVal)
+        self.info.balanceLabel.configure(text=balText)
 
     def foldCallBack(self):
         self.table.getPlayers()[0].fold()
@@ -118,26 +121,35 @@ class Visuals(ctk.CTk):
                              self._gameRound._communityCards[1]._value)
         self.cardImages.upd5(self._gameRound._communityCards[2]._suit,
                              self._gameRound._communityCards[2]._value)
-
-        print(self._gameRound.nextPlayer)
         self.info.updBal(self.table._players[0]._balance)
 
         return
 
+
 class infoLabales(ctk.CTkFrame):
-    def __init__(self,master,**kwargs):
-        super().__init__(master,**kwargs)
+
+    def __init__(self, master, **kwargs):
+        super().__init__(master, **kwargs)
         self.width = 360
 
-        self.potLabel = ctk.CTkLabel(self,text="Pot: 00000")
-        self.potLabel.grid(row=0,column=0,padx=10,pady=(10,0),sticky="sw")
-        self.lastBetLabel = ctk.CTkLabel(self,text="LastBet: 00000")
-        self.lastBetLabel.grid(row=0,column=1,padx=10,pady=(10,0),sticky="sw")
-        self.balanceLabel = ctk.CTkLabel(self,text="Balance: 00000")
-        self.balanceLabel.grid(row=0,column=2,padx=10,pady=(10,0),sticky="sw")
+        self.potLabel = ctk.CTkLabel(self, text="Pot: 00000")
+        self.potLabel.grid(row=0, column=0, padx=10, pady=(10, 0), sticky="sw")
+        self.lastBetLabel = ctk.CTkLabel(self, text="LastBet: 00000")
+        self.lastBetLabel.grid(row=0,
+                               column=1,
+                               padx=10,
+                               pady=(10, 0),
+                               sticky="sw")
+        self.balanceLabel = ctk.CTkLabel(self, text="Balance: 00000")
+        self.balanceLabel.grid(row=0,
+                               column=2,
+                               padx=10,
+                               pady=(10, 0),
+                               sticky="sw")
 
-    def updBal(self,balance):
+    def updBal(self, balance):
         self.balanceLabel.configure(text=f"Balance: {balance}")
+
 
 class cardImages(ctk.CTkFrame):
 
@@ -317,7 +329,7 @@ class cardImages(ctk.CTkFrame):
         self.card7.configure(
             image=ctk.CTkImage(light_image=Image.open(root), size=(64, 64)))
 
-    
+
 class addPlayer(ctk.CTkButton):
 
     def __init__(self, master, **kwargs):
@@ -326,9 +338,10 @@ class addPlayer(ctk.CTkButton):
         self.configure(command=self.callBack)
 
     def callBack(self):
-        dialog = ctk.CTkInputDialog(text="Enter the name of the Player",title="add Player")
+        dialog = ctk.CTkInputDialog(text="Enter the name of the Player",
+                                    title="add Player")
         text = dialog.get_input()
-        #text = f"bot {len(self.master.table.getPlayers())}"
+        text = f"bot {len(self.master.table.getPlayers())}"
         self.master.table.createPlayer(text)
         print("\nNew player list:")
         for player in self.master.table._players:
@@ -343,17 +356,30 @@ class settingsButton(ctk.CTkButton):
         self.configure(command=self.callBack)
 
     def callBack(self):
-        dialog = ctk.CTkInputDialog(text="Action: int = bet, F = fold, C = check",title="cheater")
+        dialog = ctk.CTkInputDialog(
+            text="Action: int = bet, F = fold, C = check", title="cheater")
         text = dialog.get_input()
+        text = input("enter ting here:")
+        if text == None:
+            return
         if str(text).upper() == "F":
-            self.master.table.getPlayers()[self.master._gameRound.nextPlayer].fold()
+            self.master.table.getPlayers()[
+                self.master._gameRound.nextPlayer].fold()
         elif str(text).upper() == "C":
-            self.master.table.getPlayers()[self.master._gameRound.nextPlayer].check()
+            self.master.table.getPlayers()[
+                self.master._gameRound.nextPlayer].check()
         elif str(text).upper() == "CARD":
-            for card in self.master.table.getPlayers()[self.master._gameRound.nextPlayer]._hand:
+            for card in self.master.table.getPlayers()[
+                    self.master._gameRound.nextPlayer]._hand:
                 print(str(card._value) + " : " + str(card._suit))
+        elif str(text).upper() == "NUM":
+            print(self.master._gameRound.nextPlayer)
         else:
-            self.master.table.getPlayers()[self.master._gameRound.nextPlayer].placeBet(int(text),self.master._gameRound.lastBet)
+            if self.master.table.getPlayers()[
+                self.master._gameRound.nextPlayer].placeBet(
+                    int(text), self.master._gameRound.lastBet) == False:
+                raise Exception("Error occured while placing bet: [Money : Wrong Order : previous bet too big]")
+                return
             potText = self.master.info.potLabel.cget("text")
             potVal = int(potText[5:]) + int(text)
             potText = potText[:5]
@@ -363,4 +389,4 @@ class settingsButton(ctk.CTkButton):
                 potText += "0" * (5 - len(str(potVal)))
                 potText += str(potVal)
             self.master.info.potLabel.configure(text=potText)
-        
+            

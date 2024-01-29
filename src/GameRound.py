@@ -67,9 +67,13 @@ class GameRound():
 
     def dealTurn(self):
         self._communityCards[3] = self._shoe.pop()
+        self._table._visuals.cardImages.upd6(self._communityCards[3]._suit,
+                                             self._communityCards[3]._value)
 
     def dealRiver(self):
         self._communityCards[4] = self._shoe.pop()
+        self._table._visuals.cardImages.upd7(self._communityCards[4]._suit,
+                                             self._communityCards[4]._value)
 
     def finishCommunity(self):
         for x in range(len(self._communityCards)):
@@ -105,12 +109,11 @@ class GameRound():
                     winner.append(player)
                     continue
                 if value <= player.handVal[key]:
-                    print("2,",player._name)
                     winner = [player]
                     continue
-                
+
         return winner
-        
+
     def handVal(
         self, hand
     ):  #will return dict with highest value of respective kind, list for incase multiple of it
@@ -134,7 +137,7 @@ class GameRound():
             return handVal
         House = self.checkHouse(hand)
         if House != False:
-            handVal["FullHouse"] = [House[0],House[1]]
+            handVal["FullHouse"] = [House[0], House[1]]
         sFlush = self.checkStraightFlush(hand)
         if sFlush != False:
             handVal["SF"] = [sFlush]
@@ -154,13 +157,13 @@ class GameRound():
         for index in Pair:
             handVal["Pair"].append(hand[index]._value)
         if len(Pair) >= 2:
-            handVal["TwoPair"] = [hand[Pair[0]]._value,hand[Pair[1]]._value]
-        
-        for x in range(len(hand)-2):
+            handVal["TwoPair"] = [hand[Pair[0]]._value, hand[Pair[1]]._value]
+
+        for x in range(len(hand) - 2):
             handVal["High"].append(hand[x]._value)
-        
+
         return handVal
-        
+
     def checkRoyal(
             self, list,
             startingIndex):  #checks for royal flush returns true or false
@@ -195,13 +198,13 @@ class GameRound():
     def checkHouse(self, list):
         three = self.checkThree(list)
         two = self.checkTwo(list)
-        Highest = [0,0]
+        Highest = [0, 0]
         if len(two) < 2 or len(three) < 1:
             return False
 
-        
         for index in two:
-            if index not in three and list[index]._value != list[three[0]]._value:
+            if index not in three and list[index]._value != list[
+                    three[0]]._value:
                 Highest[1] = list[index]._value
                 Highest[0] = list[three[0]]._value
                 return Highest
@@ -241,7 +244,7 @@ class GameRound():
                     straightCards.append(x)
                 if len(list) <= x + 1 + count:
                     end = True
-                
+
         if len(straightCards) == 0:
             return False
         else:

@@ -1,10 +1,10 @@
 class Player():
 
-    def __init__(self, name, balance):
+    def __init__(self, name, balance,gameRound=None):
         self._name = name
         self._balance = balance
         self._hand = []
-        self._gameRound = None
+        self._gameRound = gameRound
         self.handVal = None
 
     def getName(self):
@@ -39,8 +39,17 @@ class Player():
         self._gameRound = GameRound
         return
 
+    def checkNext(self):
+        next = self._gameRound.nextPlayer
+        index = self._gameRound._table.getPlayers().index(self)
+        if next == index:
+            return True
+        return False
+
     def placeBet(self, Bet, previousBet):
-        print(f"{self._name}: betted") 
+        if self.checkNext() == False:
+            return False
+        print(f"{self._name}: betted")
         if Bet == 0 or type(Bet) != int:
             return False
 
@@ -52,6 +61,8 @@ class Player():
             return False
 
     def call(self, previousBet):
+        if self.checkNext() == False:
+            return False
         print(f"{self._name}: called")
         if self._balance <= previousBet:
             self._gameRound.playerAction(previousBet, self)
@@ -60,11 +71,15 @@ class Player():
             return False
 
     def fold(self):
+        if self.checkNext() == False:
+            return False
         print(f"{self._name}: folded")
         self._gameRound.playerAction(False, self)
         return True
 
     def check(self):
+        if self.checkNext() == False:
+            return False
         print(f"{self._name}: checked")
         self._gameRound.playerAction(0, self)
         return True

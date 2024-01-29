@@ -12,8 +12,10 @@ class Table():
         self._shoe = Shoe(numDecks)
         self._defaultBal = None  #will be changed instantly based on config file
         self._minimumBet = None
+        self._gameRound = None
         self.setupConfig()
         self._startingPlayer = 0
+        self._visuals = None
 
     def getPlayers(self):
         return self._players
@@ -58,7 +60,7 @@ class Table():
         return
 
     def createPlayer(self, Name):
-        player = Player(Name, self._defaultBal)
+        player = Player(Name, self._defaultBal,self._gameRound)
         self.addPlayer(player)
         return
 
@@ -76,6 +78,7 @@ class Table():
 
     def startRound(self):
         gameRound = GameRound(0, self, self.getShoe())
+        self._gameRound = gameRound
         gameRound.start()
         self.rotateStartingPlayer()
         return gameRound
