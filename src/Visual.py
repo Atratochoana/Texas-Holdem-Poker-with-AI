@@ -103,7 +103,9 @@ class Visuals(ctk.CTk):
         self.table.getPlayers()[0].check()
 
     def startButtonCallBack(self):
+        print(self._gameRound)
         if self._gameRound != None:
+            print("game in action cannot use that interaction")
             return
         gameRound = self.table.startRound()
         #starts the gameRound by running all the functions
@@ -125,6 +127,14 @@ class Visuals(ctk.CTk):
         self.info.updBal(self.table._players[0]._balance)
 
         return
+
+    def endRound(self, winner):
+        self._gameRound = None
+        if self.winnerWindow is None or not self.winnerWindow.winfo_exists():
+            self.winnerWindow = winnerScreen(winner)
+            self.winnerWindow.attributes('-topmost', 'true')
+        else:
+            self.winnerWindow.focus()
 
 
 class infoLabales(ctk.CTkFrame):
@@ -394,15 +404,11 @@ class settingsButton(ctk.CTkButton):
         elif str(text).upper() == "CARD":
             for card in self.master.table.getPlayers()[
                     self.master._gameRound.nextPlayer]._hand:
-                print(str(card._value) + " : " + str(card._suit))
+                print(str(card._name) + " : " + str(card._suit))
         elif str(text).upper() == "NUM":
             print(self.master._gameRound.nextPlayer)
-        elif str(text).upper() == "TEST":
-            if self.master.winnerWindow is None or not self.master.winnerWindow.winfo_exists(
-            ):
-                self.master.winnerWindow = winnerScreen("test")
-            else:
-                self.master.winnerWindow.focus()
+        elif str(text).upper() == "END":
+            self.master.endRound(["test"])
         else:
             if self.master.table.getPlayers()[
                     self.master._gameRound.nextPlayer].placeBet(
@@ -429,7 +435,9 @@ class winnerScreen(ctk.CTkToplevel):
         self.geometry("200x200")
         self.winner = winner
         self.title("End of round")
-        winnerText = "Winner: " + str(winner)
+        winnerText = "Winner: "
+        for winner in winner:
+            winnerText += winner._name
         self.label = ctk.CTkLabel(self, text=winnerText)
         self.label.pack(padx=20, pady=20)
         self.button = ctk.CTkButton(self,
@@ -439,6 +447,7 @@ class winnerScreen(ctk.CTkToplevel):
 
     def buttonCallBack(self):
         self.destroy()
+        self.master._gameRound = None
         self.master.winnerWindow = None
         self.master.cardImages.resetCards()
         self.master.info.resetInfo()

@@ -9,6 +9,7 @@ class GameRound():
         self.nextPlayer = startingPlayer
         self.playersOut = []
         self.lastBet = 0
+        self.started = False
 
     def playerAction(self, bet, player):
         if player != self._table._players[
@@ -17,11 +18,23 @@ class GameRound():
 
         if bet == False:
             self.playersOut.append(player)
-            if len(self.playersOut) == (len(self._table._players) - 1):
+            if len(self.playersOut) == (self._table._players - 1):
                 self.calcWinner()
         else:
             self._pot += bet
             self.lastBet = bet
+        
+        lastPlayer = self._table._numPlayers - 1 #index of last player
+        while self._table._players[lastPlayer] in self.playersOut:
+            lastPlayer -= 1
+            if lastPlayer == 0:
+                break
+
+        if self._communityCards[4] != None and self.nextPlayer == lastPlayer:
+            self.calcWinner()
+            return
+
+        
 
         if (self.nextPlayer + 1) >= self._table._numPlayers:
             self.dealCommunity()
@@ -43,6 +56,7 @@ class GameRound():
                 subCount = 0
 
     def start(self):
+        self.started = True
         self._shoe.shuffleShoe()
         for player in self._table.getPlayers(
         ):  # clears players hand and adds new cards
@@ -60,6 +74,8 @@ class GameRound():
             self.dealTurn()
         elif self._communityCards[4] == None:
             self.dealRiver()
+        else:
+            self.calcWinner()
 
     def dealFlop(self):
         for card in range(3):
@@ -112,6 +128,7 @@ class GameRound():
                     winner = [player]
                     continue
 
+        self._table._visuals.endRound(winner)
         return winner
 
     def handVal(
