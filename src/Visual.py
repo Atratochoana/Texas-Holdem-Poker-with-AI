@@ -16,6 +16,7 @@ class Visuals(ctk.CTk):
         self.table._visuals = self
         self.title("Poker")
         self.geometry("1440x810")
+        self.winnerWindow = None
 
         self.settingsButton = settingsButton(self, text="settings")
         self.settingsButton.grid(row=0,
@@ -149,6 +150,11 @@ class infoLabales(ctk.CTkFrame):
 
     def updBal(self, balance):
         self.balanceLabel.configure(text=f"Balance: {balance}")
+
+    def resetInfo(self):
+        self.potLabel.configure(text="Pot: 00000")
+        self.lastBetLabel.configure(text="Lastbet: 00000")
+        self.balanceLabel.configure(text="Balance: 00000")
 
 
 class cardImages(ctk.CTkFrame):
@@ -329,6 +335,23 @@ class cardImages(ctk.CTkFrame):
         self.card7.configure(
             image=ctk.CTkImage(light_image=Image.open(root), size=(64, 64)))
 
+    def resetCards(self):
+        blankRoot = "src/Assets/Cards/card_back.png"
+        self.card1.configure(image=ctk.CTkImage(
+            light_image=Image.open(blankRoot), size=(64, 64)))
+        self.card2.configure(image=ctk.CTkImage(
+            light_image=Image.open(blankRoot), size=(64, 64)))
+        self.card3.configure(image=ctk.CTkImage(
+            light_image=Image.open(blankRoot), size=(64, 64)))
+        self.card4.configure(image=ctk.CTkImage(
+            light_image=Image.open(blankRoot), size=(64, 64)))
+        self.card5.configure(image=ctk.CTkImage(
+            light_image=Image.open(blankRoot), size=(64, 64)))
+        self.card6.configure(image=ctk.CTkImage(
+            light_image=Image.open(blankRoot), size=(64, 64)))
+        self.card7.configure(image=ctk.CTkImage(
+            light_image=Image.open(blankRoot), size=(64, 64)))
+
 
 class addPlayer(ctk.CTkButton):
 
@@ -374,11 +397,19 @@ class settingsButton(ctk.CTkButton):
                 print(str(card._value) + " : " + str(card._suit))
         elif str(text).upper() == "NUM":
             print(self.master._gameRound.nextPlayer)
+        elif str(text).upper() == "TEST":
+            if self.master.winnerWindow is None or not self.master.winnerWindow.winfo_exists(
+            ):
+                self.master.winnerWindow = winnerScreen("test")
+            else:
+                self.master.winnerWindow.focus()
         else:
             if self.master.table.getPlayers()[
-                self.master._gameRound.nextPlayer].placeBet(
-                    int(text), self.master._gameRound.lastBet) == False:
-                raise Exception("Error occured while placing bet: [Money : Wrong Order : previous bet too big]")
+                    self.master._gameRound.nextPlayer].placeBet(
+                        int(text), self.master._gameRound.lastBet) == False:
+                raise Exception(
+                    "Error occured while placing bet: [Money : Wrong Order : previous bet too big]"
+                )
                 return
             potText = self.master.info.potLabel.cget("text")
             potVal = int(potText[5:]) + int(text)
@@ -389,4 +420,26 @@ class settingsButton(ctk.CTkButton):
                 potText += "0" * (5 - len(str(potVal)))
                 potText += str(potVal)
             self.master.info.potLabel.configure(text=potText)
-            
+
+
+class winnerScreen(ctk.CTkToplevel):
+
+    def __init__(self, winner, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.geometry("200x200")
+        self.winner = winner
+        self.title("End of round")
+        winnerText = "Winner: " + str(winner)
+        self.label = ctk.CTkLabel(self, text=winnerText)
+        self.label.pack(padx=20, pady=20)
+        self.button = ctk.CTkButton(self,
+                                    text="Start a new round",
+                                    command=self.buttonCallBack)
+        self.button.pack(padx=20, pady=40)
+
+    def buttonCallBack(self):
+        self.destroy()
+        self.master.winnerWindow = None
+        self.master.cardImages.resetCards()
+        self.master.info.resetInfo()
+        self.master._gameRound = self.master.table.startRound()

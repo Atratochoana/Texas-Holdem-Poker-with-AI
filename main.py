@@ -10,7 +10,6 @@ GUI.attributes("-fullscreen", False)
 GUI.mainloop()
 
 
-
 # Table.getPlayers()[0].placeBet(50, 0)
 # Table.getPlayers()[1].placeBet(30, 0)
 # Table.getPlayers()[2].placeBet(70, 0)
