@@ -103,14 +103,14 @@ class Visuals(ctk.CTk):
         self.table.getPlayers()[0].check()
 
     def startButtonCallBack(self):
-        print(self._gameRound)
         if self._gameRound != None:
-            print("game in action cannot use that interaction")
-            return
+            print(self._gameRound.started)
+            if self._gameRound.started == True:
+                print("game in action cannot use that interaction")
+                return
         gameRound = self.table.startRound()
         #starts the gameRound by running all the functions
         self._gameRound = gameRound
-        self._gameRound.start()
         self._gameRound.dealCommunity()
         #update the hand card visuals
         self.cardImages.upd1(self.table._players[0]._hand[0]._suit,
@@ -451,4 +451,4 @@ class winnerScreen(ctk.CTkToplevel):
         self.master.winnerWindow = None
         self.master.cardImages.resetCards()
         self.master.info.resetInfo()
-        self.master._gameRound = self.master.table.startRound()
+        

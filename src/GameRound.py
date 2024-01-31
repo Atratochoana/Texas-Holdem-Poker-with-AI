@@ -34,8 +34,6 @@ class GameRound():
             self.calcWinner()
             return
 
-        
-
         if (self.nextPlayer + 1) >= self._table._numPlayers:
             self.dealCommunity()
             self.nextPlayer = 0
@@ -129,6 +127,8 @@ class GameRound():
                     continue
 
         self._table._visuals.endRound(winner)
+        for player in winner:
+            player._balance = player._balance + (self._pot/len(winner))
         return winner
 
     def handVal(
