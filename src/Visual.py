@@ -227,7 +227,7 @@ class cardImages(ctk.CTkFrame):
                 root += "K" + ".png"
             elif value == 14:
                 root += "A" + ".png"
-
+# gab was here
         self.card1.configure(
             image=ctk.CTkImage(light_image=Image.open(root), size=(64, 64)))
 
@@ -284,7 +284,7 @@ class cardImages(ctk.CTkFrame):
                 root += "K" + ".png"
             elif value == 14:
                 root += "A" + ".png"
-
+# and here
         self.card4.configure(
             image=ctk.CTkImage(light_image=Image.open(root), size=(64, 64)))
 
@@ -387,7 +387,7 @@ class settingsButton(ctk.CTkButton):
         super().__init__(master, **kwargs)
         self.master = master
         self.configure(command=self.callBack)
-
+# and here
     def callBack(self):
         dialog = ctk.CTkInputDialog(
             text="Action: int = bet, F = fold, C = check", title="cheater")

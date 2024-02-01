@@ -273,8 +273,7 @@ class GameRound():
             for x in range(3):
                 if x == 2:
                     three.append(card)
-                    break
-                # print(card, " ", list[card + x]._value)
+                    break)
                 if list[card + x]._value != list[card + x + 1]._value:
                     break
         return three
