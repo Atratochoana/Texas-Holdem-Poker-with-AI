@@ -1,3 +1,5 @@
+from src import AI
+
 class GameRound():
 
     def __init__(self, startingPlayer, table, shoe):
@@ -16,6 +18,13 @@ class GameRound():
                 self.nextPlayer] or player in self.playersOut:
             return
 
+        cards = [player._hand[0],player._hand[1]] 
+        for card in self._communityCards:
+            if card is not None:
+                cards.append(card)
+        
+        AI.gameTree.addNode(bet,self.lastBet,self._table._players.index(player),cards=cards)
+        
         if bet == False:
             self.playersOut.append(player)
             if len(self.playersOut) == (self._table._players - 1):

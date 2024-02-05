@@ -17,6 +17,7 @@ class Visuals(ctk.CTk):
         self.title("Poker")
         self.geometry("1440x810")
         self.winnerWindow = None
+        self.betWindow = None
 
         self.settingsButton = settingsButton(self, text="settings")
         self.settingsButton.grid(row=0,
@@ -79,6 +80,11 @@ class Visuals(ctk.CTk):
         pass
 
     def betCallBack(self):
+        if self.betWindow == None:
+            self.betWindow = betScreen(self)
+        
+        return
+        
         text = self.entry.get()
         text = 30
         if self.table.getPlayers()[0].placeBet(int(text), 0) == False:
@@ -452,3 +458,28 @@ class winnerScreen(ctk.CTkToplevel):
         self.master.cardImages.resetCards()
         self.master.info.resetInfo()
         
+class betScreen(ctk.CTkToplevel):
+
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.geometry("400x200")
+        self.callButton = ctk.CTkButton(self,text="CALL",command=self.callCallback)
+        self.callButton.grid(row=0,pady=20,padx=20)
+        self.quarterButton = ctk.CTkButton(self,text="RAISE 1/4",command=self.quarterCallback)
+        self.quarterButton.grid(row=1,pady=20,padx=20)
+        self.halfButton = ctk.CTkButton(self,text="RAISE 1/2",command=self.halfCallback)
+        self.halfButton.grid(row=0,column=1,pady=20,padx=20)
+        self.fullButton = ctk.CTkButton(self,text="RAISE FULL",command=self.fullCallback)
+        self.fullButton.grid(row=1,column=1,pady=20,padx=20)
+
+    def callCallback(self):
+        pass
+
+    def quarterCallback(self):
+        pass
+
+    def halfCallback(self):
+        pass
+
+    def fullCallback(self):
+        pass
