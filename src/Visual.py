@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from PIL import Image
+import math
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
@@ -82,25 +83,25 @@ class Visuals(ctk.CTk):
     def betCallBack(self):
         if self.betWindow == None:
             self.betWindow = betScreen(self)
-        
+
         return
-        
+
         text = self.entry.get()
         text = 30
-        if self.table.getPlayers()[0].placeBet(int(text), 0) == False:
-            return
-        potText = self.info.potLabel.cget("text")
-        potVal = int(potText[5:]) + int(text)
-        potText = potText[:5]
-        if len(str(potVal)) >= 5:
-            potText += str(potVal)
-        else:
-            potText += "0" * (5 - len(str(potVal)))
-            potText += str(potVal)
-        self.info.potLabel.configure(text=potText)
-        balVal = self.table.getPlayers()[0]._balance
-        balText = "Balance: " + str(balVal)
-        self.info.balanceLabel.configure(text=balText)
+        # if self.table.getPlayers()[0].placeBet(int(text), 0) == False:
+        #     return
+        # potText = self.info.potLabel.cget("text")
+        # potVal = int(potText[5:]) + int(text)
+        # potText = potText[:5]
+        # if len(str(potVal)) >= 5:
+        #     potText += str(potVal)
+        # else:
+        #     potText += "0" * (5 - len(str(potVal)))
+        #     potText += str(potVal)
+        # self.info.potLabel.configure(text=potText)
+        # balVal = self.table.getPlayers()[0]._balance
+        # balText = "Balance: " + str(balVal)
+        # self.info.balanceLabel.configure(text=balText)
 
     def foldCallBack(self):
         self.table.getPlayers()[0].fold()
@@ -130,7 +131,7 @@ class Visuals(ctk.CTk):
                              self._gameRound._communityCards[1]._value)
         self.cardImages.upd5(self._gameRound._communityCards[2]._suit,
                              self._gameRound._communityCards[2]._value)
-        self.info.updBal(self.table._players[0]._balance)
+        self.info.updBal(int(self.table._players[0]._balance))
 
         return
 
@@ -233,7 +234,6 @@ class cardImages(ctk.CTkFrame):
                 root += "K" + ".png"
             elif value == 14:
                 root += "A" + ".png"
-# gab was here
         self.card1.configure(
             image=ctk.CTkImage(light_image=Image.open(root), size=(64, 64)))
 
@@ -290,7 +290,6 @@ class cardImages(ctk.CTkFrame):
                 root += "K" + ".png"
             elif value == 14:
                 root += "A" + ".png"
-# and here
         self.card4.configure(
             image=ctk.CTkImage(light_image=Image.open(root), size=(64, 64)))
 
@@ -393,7 +392,10 @@ class settingsButton(ctk.CTkButton):
         super().__init__(master, **kwargs)
         self.master = master
         self.configure(command=self.callBack)
+
+
 # and here
+
     def callBack(self):
         dialog = ctk.CTkInputDialog(
             text="Action: int = bet, F = fold, C = check", title="cheater")
@@ -457,29 +459,137 @@ class winnerScreen(ctk.CTkToplevel):
         self.master.winnerWindow = None
         self.master.cardImages.resetCards()
         self.master.info.resetInfo()
-        
+
+
 class betScreen(ctk.CTkToplevel):
 
-    def __init__(self,*args,**kwargs):
-        super().__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.geometry("400x200")
-        self.callButton = ctk.CTkButton(self,text="CALL",command=self.callCallback)
-        self.callButton.grid(row=0,pady=20,padx=20)
-        self.quarterButton = ctk.CTkButton(self,text="RAISE 1/4",command=self.quarterCallback)
-        self.quarterButton.grid(row=1,pady=20,padx=20)
-        self.halfButton = ctk.CTkButton(self,text="RAISE 1/2",command=self.halfCallback)
-        self.halfButton.grid(row=0,column=1,pady=20,padx=20)
-        self.fullButton = ctk.CTkButton(self,text="RAISE FULL",command=self.fullCallback)
-        self.fullButton.grid(row=1,column=1,pady=20,padx=20)
+        self.title = "betting"
+        self.player = self.master.table.getPlayers()[0]
+        quarterState = "normal"
+        halfState = "normal"
+        fullState = "normal"
+        if self.player._balance < math.floor(self.master._gameRound._pot / 4):
+            quarterState = "disabled"
+            halfState = "disabled"
+            fullState = "disabled"
+        elif self.player._balance < math.floor(
+                self.master._gameRound._pot / 2):
+            halfState = "disabled"
+            fullState = "disabled"
+        elif self.player._balance < self.master._gameRound._pot:
+            fullState = "disabled"
+
+        self.callButton = ctk.CTkButton(self,
+                                        text="CALL",
+                                        command=self.callCallback)
+        self.callButton.grid(row=0, pady=20, padx=20)
+        self.quarterButton = ctk.CTkButton(self,
+                                           text="RAISE 1/4",
+                                           command=self.quarterCallback,
+                                           state=quarterState)
+        self.quarterButton.grid(row=1, pady=20, padx=20)
+        self.halfButton = ctk.CTkButton(self,
+                                        text="RAISE 1/2",
+                                        command=self.halfCallback,
+                                        state=halfState)
+        self.halfButton.grid(row=0, column=1, pady=20, padx=20)
+        self.fullButton = ctk.CTkButton(self,
+                                        text="RAISE FULL",
+                                        command=self.fullCallback,
+                                        state=fullState)
+        self.fullButton.grid(row=1, column=1, pady=20, padx=20)
 
     def callCallback(self):
-        pass
+        if self.master._gameRound.lastBet == 0:
+            val = 100
+        else:
+            val = self.master._gameRound.lastBet
+        if self.master.table.getPlayers()[0].placeBet(val, 0) == False:
+            return
+
+        potText = self.master.info.potLabel.cget("text")
+        potVal = int(potText[5:]) + int(val)
+        potText = potText[:5]
+        if len(str(potVal)) >= 5:
+            potText += str(potVal)
+        else:
+            potText += "0" * (5 - len(str(potVal)))
+            potText += str(potVal)
+        self.master.info.potLabel.configure(text=potText)
+        balVal = self.master.table.getPlayers()[0]._balance
+        balText = "Balance: " + str(balVal)
+        self.master.info.balanceLabel.configure(text=balText)
+        self.master.betWindow = None
+        self.destroy()
 
     def quarterCallback(self):
-        pass
+        if self.master._gameRound.lastBet == 0:
+            val = 100
+        else:
+            val = math.floor(self.master._gameRound._pot / 4)
+        if self.master.table.getPlayers()[0].placeBet(val, 0) == False:
+            return
+
+        potText = self.master.info.potLabel.cget("text")
+        potVal = int(potText[5:]) + int(val)
+        potText = potText[:5]
+        if len(str(potVal)) >= 5:
+            potText += str(potVal)
+        else:
+            potText += "0" * (5 - len(str(potVal)))
+            potText += str(potVal)
+        self.master.info.potLabel.configure(text=potText)
+        balVal = self.master.table.getPlayers()[0]._balance
+        balText = "Balance: " + str(balVal)
+        self.master.info.balanceLabel.configure(text=balText)
+        self.master.betWindow = None
+        self.destroy()
 
     def halfCallback(self):
-        pass
+        if self.master._gameRound.lastBet == 0:
+            val = 100
+        else:
+            val = math.floor(self.master._gameRound._pot / 2)
+        if self.master.table.getPlayers()[0].placeBet(val, 0) == False:
+            return
+
+        potText = self.master.info.potLabel.cget("text")
+        potVal = int(potText[5:]) + int(val)
+        potText = potText[:5]
+        if len(str(potVal)) >= 5:
+            potText += str(potVal)
+        else:
+            potText += "0" * (5 - len(str(potVal)))
+            potText += str(potVal)
+        self.master.info.potLabel.configure(text=potText)
+        balVal = self.master.table.getPlayers()[0]._balance
+        balText = "Balance: " + str(balVal)
+        self.master.info.balanceLabel.configure(text=balText)
+        self.master.betWindow = None
+        self.destroy()
 
     def fullCallback(self):
-        pass
+        if self.master._gameRound.lastBet == 0:
+            val = 100
+        else:
+            val = self.master._gameRound._pot
+        if self.master.table.getPlayers()[0].placeBet(val, 0) == False:
+            return
+
+        potText = self.master.info.potLabel.cget("text")
+        potVal = int(potText[5:]) + int(val)
+        potText = potText[:5]
+        if len(str(potVal)) >= 5:
+            potText += str(potVal)
+        else:
+            potText += "0" * (5 - len(str(potVal)))
+            potText += str(potVal)
+        self.master.info.potLabel.configure(text=potText)
+        balVal = self.master.table.getPlayers()[0]._balance
+        balText = "Balance: " + str(balVal)
+        self.master.info.balanceLabel.configure(text=balText)
+        self.master.betWindow = None
+        self.destroy()

@@ -23,7 +23,7 @@ class GameRound():
             if card is not None:
                 cards.append(card)
         
-        AI.gameTree.addNode(bet,self.lastBet,self._table._players.index(player),cards=cards)
+        AI.gameTree.addNode(self=self,bet=bet,lastBet=self.lastBet,player=self._table._players.index(player),cards=cards)
         
         if bet == False:
             self.playersOut.append(player)
