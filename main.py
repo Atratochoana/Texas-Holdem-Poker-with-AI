@@ -8,5 +8,3 @@ Table.createPlayer("self")
 GUI = Visual.Visuals(Table)
 GUI.attributes("-fullscreen", False)
 GUI.mainloop()
-
-

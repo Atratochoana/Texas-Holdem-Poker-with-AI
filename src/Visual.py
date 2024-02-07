@@ -379,7 +379,7 @@ class addPlayer(ctk.CTkButton):
         dialog = ctk.CTkInputDialog(text="Enter the name of the Player",
                                     title="add Player")
         text = dialog.get_input()
-        text = f"bot {len(self.master.table.getPlayers())}"
+        #text = f"bot {len(self.master.table.getPlayers())}"
         self.master.table.createPlayer(text)
         print("\nNew player list:")
         for player in self.master.table._players:
@@ -392,9 +392,6 @@ class settingsButton(ctk.CTkButton):
         super().__init__(master, **kwargs)
         self.master = master
         self.configure(command=self.callBack)
-
-
-# and here
 
     def callBack(self):
         dialog = ctk.CTkInputDialog(
