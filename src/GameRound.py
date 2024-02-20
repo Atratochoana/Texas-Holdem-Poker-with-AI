@@ -1,5 +1,6 @@
 from src import AI
 
+
 class GameRound():
 
     def __init__(self, startingPlayer, table, shoe):
@@ -14,17 +15,16 @@ class GameRound():
         self.started = False
 
     def playerAction(self, bet, player):
+        AI.evaluateHand(self._communityCards, player)
         if player != self._table._players[
                 self.nextPlayer] or player in self.playersOut:
             return
 
-        cards = [player._hand[0],player._hand[1]] 
+        cards = [player._hand[0], player._hand[1]]
         for card in self._communityCards:
             if card is not None:
                 cards.append(card)
-        
-        AI.gameTree.addNode(self=self,bet=bet,lastBet=self.lastBet,player=self._table._players.index(player),cards=cards)
-        
+
         if bet == False:
             self.playersOut.append(player)
             if len(self.playersOut) == (self._table._players - 1):
@@ -32,8 +32,8 @@ class GameRound():
         else:
             self._pot += bet
             self.lastBet = bet
-        
-        lastPlayer = self._table._numPlayers - 1 #index of last player
+
+        lastPlayer = self._table._numPlayers - 1  #index of last player
         while self._table._players[lastPlayer] in self.playersOut:
             lastPlayer -= 1
             if lastPlayer == 0:
@@ -110,7 +110,7 @@ class GameRound():
             allCards = player._hand
             for card in self._communityCards:
                 if card != None:
-                    allCards.append(card)
+                    allCards.append(card)  # this is causing error
                 else:
                     index = self._communityCards.index(card)
                     self.finishCommunity()
@@ -137,7 +137,7 @@ class GameRound():
 
         self._table._visuals.endRound(winner)
         for player in winner:
-            player._balance = player._balance + (self._pot/len(winner))
+            player._balance = player._balance + (self._pot / len(winner))
         return winner
 
     def handVal(

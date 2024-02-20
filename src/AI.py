@@ -1,53 +1,53 @@
-class TreeNode:
-    """[player]: index of the player making the action
-       [action]: actions taking place E.G. call,check,fold,raise
-       [card]: current cards in player in list first 2 indexs of list are for hole rest community, list len dont matter"""
+def evaluateHand(communityCards, player):
 
-    def __init__(self, player, action=None, card=[]):
-        self.action = action  #actions taken place
-        self.player = player  #player index
-        self.cards = card  #cards visible at the time of play
-        self.children = []  #children connected to this action
+    hand = player._hand
+    print(hand)
+    hand.sort(key=lambda x: x._value, reverse=True)
+    comCards = communityCards
+    allCards = hand
+    comVal = []
+    comSuit = []
+    
+    for card in comCards:
+        if card == None:
+            continue
+        comVal.append(card._value)
+        comSuit.append(card._suit)
+        allCards.append(card)
 
-    def addChild(self, Node):
-        self.children.append(Node)
+    print(allCards)
+    allCards.sort(key=lambda x: x._value, reverse=True)
+    evalHand = player._gameRound.handVal(allCards)
 
-    def removeChild(self, child):
-        if child in self.children:
-            self.children.pop(self.children.index(child))
-            return True
-        else:
-            return False
+    handVal = 0  # handVal will be based on chance for each action. EG; 1-10 is % chance for HighCard win, so 100% is 10 for expample has an Ace in hand, 1-10 for pair wins
+    # it will give a 1-10 for chance of what its going to get * by its order in list, then segment handVals value, 1-20 fold, 20-30 low bet, 30-50 high bet, 50+ all in.
 
-    def addCall(self, player, cards):
-        """[player]: index of the player
-           [cards]: current cards in play"""
-        self.children.append(TreeNode(player, cards, action="call"))
-
-    def addRaise(self, player, cards):
-        """[player]: index of the player
-           [cards]: current cards in play"""
-        self.children.append(TreeNode(player, cards, action="raise"))
-
-    def addCheck(self, player, cards):
-        """[player]: index of the player
-           [cards]: current cards in play"""
-        self.children.append(TreeNode(player, card=cards, action="check"))
-
-    def addFold(self, player, cards):
-        """[player]: index of the player
-           [cards]: cuurent cards in player"""
-        self.children.append(TreeNode(player, card=cards, action="fold"))
-
-
-class gameTree:
-
-    def __init__(self):
-        self.children = []
-        self.players = []
-
-    def addNode(self, bet, lastBet, player, cards):
-        print("worked")
-
-
-game = gameTree()
+    evalIndex = ["RF","SF","4OfKind","FullHouse","Flush","Straight","ThreeOfKind","TwoPair","Pair","High"]
+    cardVals = {
+        "14": 10,
+        "13": 9,
+        "12": 9,
+        "11": 8,
+        "10": 8,
+        "9": 7,
+        "8": 6,
+        "7": 5,
+        "6": 5,
+        "5": 4,
+        "4": 3,
+        "3": 2,
+        "2": 2,
+    }
+    
+    for x in range(len(evalHand),0,-1):
+        if evalHand[evalIndex[x]] != []:
+            handVal += cardVals[str(evalHand[evalIndex[x]][0])] * x
+            print(cardVals[str(evalHand[evalIndex[x]][0])])
+            
+    
+    
+    
+        
+    print(evalHand)
+    print("End:",handVal)
+    return

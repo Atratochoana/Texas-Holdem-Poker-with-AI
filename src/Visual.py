@@ -86,23 +86,6 @@ class Visuals(ctk.CTk):
 
         return
 
-        text = self.entry.get()
-        text = 30
-        # if self.table.getPlayers()[0].placeBet(int(text), 0) == False:
-        #     return
-        # potText = self.info.potLabel.cget("text")
-        # potVal = int(potText[5:]) + int(text)
-        # potText = potText[:5]
-        # if len(str(potVal)) >= 5:
-        #     potText += str(potVal)
-        # else:
-        #     potText += "0" * (5 - len(str(potVal)))
-        #     potText += str(potVal)
-        # self.info.potLabel.configure(text=potText)
-        # balVal = self.table.getPlayers()[0]._balance
-        # balText = "Balance: " + str(balVal)
-        # self.info.balanceLabel.configure(text=balText)
-
     def foldCallBack(self):
         self.table.getPlayers()[0].fold()
 
