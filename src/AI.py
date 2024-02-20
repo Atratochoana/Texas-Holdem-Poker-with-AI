@@ -1,7 +1,6 @@
 def evaluateHand(communityCards, player):
 
     hand = player._hand
-    print(hand)
     hand.sort(key=lambda x: x._value, reverse=True)
     comCards = communityCards
     allCards = hand
@@ -14,8 +13,6 @@ def evaluateHand(communityCards, player):
         comVal.append(card._value)
         comSuit.append(card._suit)
         allCards.append(card)
-
-    print(allCards)
     allCards.sort(key=lambda x: x._value, reverse=True)
     evalHand = player._gameRound.handVal(allCards)
 
@@ -38,11 +35,14 @@ def evaluateHand(communityCards, player):
         "3": 2,
         "2": 2,
     }
+
+    print(evalHand)
     
     for x in range(len(evalHand),0,-1):
-        if evalHand[evalIndex[x]] != []:
-            handVal += cardVals[str(evalHand[evalIndex[x]][0])] * x
-            print(cardVals[str(evalHand[evalIndex[x]][0])])
+        if evalHand[evalIndex[x-1]] != []:
+            print(evalHand[evalIndex[x-1]][0])
+            handVal += cardVals[str(evalHand[evalIndex[x-1]][0])] * x
+            print(cardVals[str(evalHand[evalIndex[x-1]][0])])
             
     
     

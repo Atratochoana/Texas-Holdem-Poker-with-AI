@@ -107,7 +107,9 @@ class GameRound():
         for player in self._table._players:
             if player in self.playersOut:
                 continue
-            allCards = player._hand
+            allCards = []
+            allCards.append(player._hand[0])
+            allCards.append(player._hand[1])
             for card in self._communityCards:
                 if card != None:
                     allCards.append(card)  # this is causing error
@@ -156,8 +158,6 @@ class GameRound():
             "Pair": [],
             "High": [],
         }
-        self.checkFour(hand)
-
         if self.checkRoyal(hand, 0):
             handVal["RF"] = [14]
             return handVal
@@ -168,7 +168,7 @@ class GameRound():
         if sFlush != False:
             handVal["SF"] = [sFlush]
         FourKind = self.checkFour(hand)
-        handVal["4OfKind"] = hand[FourKind]
+        handVal["4OfKind"] = [hand[FourKind]._value]
         Flush = self.checkFlush(hand)
         if Flush != False:
             handVal["Flush"] = hand[Flush]
@@ -214,6 +214,7 @@ class GameRound():
         four = False
         for card in range(0, len(list) - 4):
             for x in range(4):
+                print("x:", x)
                 if x == 3:
                     four = list[card]._value
                     break
