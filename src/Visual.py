@@ -81,6 +81,9 @@ class Visuals(ctk.CTk):
         pass
 
     def betCallBack(self):
+        if self._gameRound == None:
+            return
+            
         if self.betWindow == None:
             self.betWindow = betScreen(self)
 
