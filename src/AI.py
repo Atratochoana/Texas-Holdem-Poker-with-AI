@@ -8,6 +8,7 @@ def evaluateHand(communityCards, player):
     allCards.append(hand[1])
     comVal = []
     comSuit = []
+    pocket = False
 
     for card in comCards:
         if card == None or card in allCards:
@@ -49,7 +50,8 @@ def evaluateHand(communityCards, player):
     #how close to getting pair
 
     if hand[0]._value == hand[1]._value:
-        print("Pair hand")
+        pocket = True
+        print("Pocket Pair [{hand[0]._name}]")
     for card in hand:
         if card._value in comVal:
             print(f"{card._name} Pair")
@@ -59,6 +61,11 @@ def evaluateHand(communityCards, player):
             print(f"{card._name} Pair chance: {numVal/((len(player._gameRound._shoe._decks)*52)-2-len(comVal))*100}")
 
     #chance to two
+    if pocket == True:
+        for val in -comVal:
+            if comVal.count(val) >= 2:
+                print(f"Two Pair {val}, {val}")
+
     
     print(evalHand)
     print("End:", handVal)
