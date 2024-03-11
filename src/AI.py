@@ -74,16 +74,13 @@ def evaluateHand(communityCards, player):
     
     if hand[0]._value == hand[1]._value:
         handPair = True
-        print("Pair hand")
     for card in hand:
         if card._value in comVal:
             chance["Pair"][tempIndex] = 100
-            print(f"{card._name} Pair")
         else:
             numVal = comVal.count(card._value)
             numVal = 4 - hand.count(card._value) - numVal
             chance["Pair"][tempIndex] = numVal/((len(player._gameRound._shoe._decks)*52)-2-len(comVal))*100
-            print(f"{card._name} Pair chance: {numVal/(cardLen-2-len(comVal))*100}")
         tempIndex += 1
         
     #chance to two
@@ -104,14 +101,36 @@ def evaluateHand(communityCards, player):
                 pairs += 0.5
 
         if pairs == 1:
-            chance["TwoPair"] = (numVal + (3 * len(np.unique(comVal))) /(cardLen-2-len(comVal))*100)
+            chance["TwoPair"] = ((numVal + (3 * len(np.unique(comVal)))) /(cardLen-2-len(comVal)))*100
         if pairs == 0:
-            chance["TwoPair"] =  ((3 + len(comVal) / (cardLen - len(comVal) - 2)) ** 2) * 100
-
+            if len(comVal) >= 4:
+                chance["TwoPair"] = 0
+            else:
+                chance["TwoPair"] =  ((15 / (52 - 5)) * (6 / (52 - 6))) * 100
         if pairs == 2:
             chance["TwoPair"] = 100
-                
-    print(int(pairs))
+
+
+    #chance for three of kind
+    if handPair == True: # if you have two of the same cards in ur hand, chance to get same type over multiple goes
+        if comVal.count(hand[0]._value) >= 1:
+            chance["ThreeOfKind"] = 100
+        else:
+            chance["ThreeOfKind"] = (2 / (cardLen - len(comVal) - 2)) * 100
+    else:
+        for card in hand:
+            if comVal.count(card._value) >= 2:
+                chance["ThreeOfKind"] =  100
+            if comVal.count(card._value) == 1:
+                chance["ThreeOfKind"] = ((2 / (cardLen - len(comVal) - 2)) + (2 / (cardLen - len(comVal) - 3)) + ((3 / (cardLen - len(comVal) - 2)) * (2/ (cardLen - len(comVal) - 2)))) * 100
+            if comVal.count(card._value) == 0:
+                if len(comVal) == 4:
+                    chance["ThreeOfKind"] = 0
+                    break
+                chance["ThreeOfKind"] = (6 / (cardLen - len(comVal) - 2)) * (2 / (cardLen - len(comVal) - 3)) * 100
+    
+    #chance to get a straight
+
     
     
     
