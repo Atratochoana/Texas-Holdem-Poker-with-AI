@@ -136,16 +136,9 @@ def evaluateHand(communityCards, player):
     #chance to get a straight - WIP
     sOut = 0
     cVal = 0
+    print(allCards)
     for card in range(len(allCards) - 1):
-        cVal = allCards[card]._value
-        subCount = 1
-        while cVal != allCards[card - subCount]._value and subCount <= (
-                len(allCards) - card):
-            subCount += 1
-            sOut += 1
-            if allCards[card - subCount + 2]._value == allCards[card -
-                                                                subCount + 1]:
-                sOut -= 1
+        sOut += allCards[card]._value - allCards[card - 1]._value
 
     print(sOut)
 
