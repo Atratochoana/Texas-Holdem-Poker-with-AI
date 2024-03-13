@@ -167,10 +167,10 @@ class GameRound():
             handVal["SF"] = [sFlush]
         FourKind = self.checkFour(hand)
         if FourKind != False:
-            handVal["4OfKind"] = [hand[FourKind]._value]
+            handVal["4OfKind"] = [FourKind]
         Flush = self.checkFlush(hand)
         if Flush != False:
-            handVal["Flush"] = hand[Flush]._value
+            handVal["Flush"] = [Flush]
         Straight = self.checkStraight(hand)
         if Straight != False:
             handVal["Straight"] = hand[Straight[0]]._value
