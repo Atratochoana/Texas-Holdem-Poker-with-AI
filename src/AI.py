@@ -10,18 +10,30 @@ def evaluateHand(communityCards, player):
     allCards = []  # call cards including hand and community cards
     allCards.append(hand[0])
     allCards.append(hand[1])
+    lenUnique = 2
     comVal = []  # community cards values
     comSuit = []  # community cards suits
     cardLen = len(
         player._gameRound._shoe._decks
     ) * 52  # shoe length with all cards  not the ones that have been kicked out yet
+    handPair = False
+
+    if hand[0]._value == hand[1]._value:
+        lenUnique -= 1
+        handPair = True
 
     for card in comCards:
         if card == None or card in allCards:
             continue
+        if card._value != hand[0]._value and card._value != hand[
+                1]._value and card._value not in comVal:
+            lenUnique += 1
+
         comVal.append(card._value)
         comSuit.append(card._suit)
         allCards.append(card)
+
+    print("unique", lenUnique)
 
     allCards.sort(key=lambda x: x._value, reverse=True)
     evalHand = player._gameRound.handVal(allCards)
@@ -133,14 +145,53 @@ def evaluateHand(communityCards, player):
                 chance["ThreeOfKind"] = (6 / (cardLen - len(comVal) - 2)) * (
                     2 / (cardLen - len(comVal) - 3)) * 100
 
-    #chance to get a straight - WIP
+    #chance to get a straight
     sOut = 0
-    cVal = 0
-    print(allCards)
     for card in range(len(allCards) - 1):
-        sOut += allCards[card]._value - allCards[card - 1]._value
+        if allCards[card]._value == allCards[card + 1]._value:
+            continue
+        sOut += (allCards[card]._value - allCards[card + 1]._value) - 1
+    if lenUnique <= 4:
+        sOut += 1
 
-    print(sOut)
+    if sOut >= 3:
+        chance["Straight"] = 0
+    else:
+        chance["Straight"] =  ((4 / (cardLen - len(allCards))) ** sOut) * 100
+    
+    #chance for a flush
+    if len(comSuit) == 3:
+        if hand[0]._suit == hand[1]._suit and comSuit.count(hand[0]._suit) == 3:
+            chance["Flush"] = 100
+        elif comSuit.count(hand[0]._suit) == 3 or comSuit.count(hand[1]._suit) == 3:
+            chance["Flush"] = (10 / (cardLen - 5)) * 100
+        elif hand[0]._suit == hand[1]._suit and comSuit.count(hand[0]._suit) == 2:
+            chance["Flush"] = (10 / (cardLen - 5)) * 100
+        elif hand[0]._suit == hand[1]._suit and comSuit.count(hand[0]._suit) == 1:
+            chance["Flush"] = (11 / (cardLen - 5)) * (10 / (cardLen - 6)) * 100
+        elif comSuit.count(hand[0]._suit) == 2 or comSuit.count(hand[1]._suit) == 2:
+            chance["Flush"] = (11 / (cardLen - 5)) * (10 / (cardLen - 6)) * 100
+        else:
+            chance["Flush"] = 0
+    elif len(comSuit) == 4:
+        if hand[0]._suit == hand[1]._suit and comSuit.count(hand[0]._suit) >= 3:
+            chance["Flush"] = 100
+        elif comSuit.count(hand[0]._suit) == 4 or comSuit.count(hand[1]._suit) == 4:
+            chance["Flush"] = 100
+        elif comSuit.count(hand[0]._suit) == 3 or comSuit.count(hand[1]._suit) == 3:
+            chance["Flush"] = (10 / (cardLen - 6)) * 100
+        elif comSuit.count(hand[0]._suit) <= 2 or comSuit.count(hand[1]._suit) <= 2: 
+            chance["Flush"] = 0
+    
+        
+
+    #chance to get a fullHouse - 3 of a kind and 2 of a kind
+    
+    
+
+
+
+    
 
     #chance to get a straight flush - WIP
     leftMatch = False
@@ -167,13 +218,19 @@ def evaluateHand(communityCards, player):
 
     matchingSuit.sort(key=lambda x: x._value, reverse=True)
 
-    if leftMatch or rightMatch:
-        out = 0
-        for cards in matchingSuit:
-            pass
+    if len(matchingSuit) <= 3:
+        chance["SF"] = 0
+    elif leftMatch or rightMatch:
+        sOut = 0
+        for card in range(len(matchingSuit) - 1):
+            if matchingSuit[card]._value == matchingSuit[card + 1]._value:
+                continue
+            sOut += (matchingSuit[card]._value - matchingSuit[card + 1]._value) - 1
+        if len(matchingSuit) <= 4:
+            sOut += 1
 
     else:
-        chance["Straight"] = 0
+        chance["SF"] = 0
 
     # print("mathcingsuits : ", matchingSuit)
     # print("left: ",leftMatch)

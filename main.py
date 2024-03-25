@@ -15,12 +15,12 @@ player = Player.Player(
 )
 player._hand = [
     CardManagement.Card("Heart", 14, "test", None),
-    CardManagement.Card("Heart", 14, "test", None)
+    CardManagement.Card("not heard", 9, "test", None)
 ]
 communityCard = [
+    CardManagement.Card("Heart", 13, "test", None),
     CardManagement.Card("Heart", 12, "test", None),
-    CardManagement.Card("Heart", 12, "test", None),
-    CardManagement.Card("Heart", 12, "test", None),
+    CardManagement.Card("Heart", 10, "test", None),
 ]
 
 Table = Table.Table(1)

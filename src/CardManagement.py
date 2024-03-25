@@ -140,6 +140,6 @@ class Shoe():
         random.shuffle(self._shoe)
 
     def pop(self):
-        card = self.getShoe().pop()
+        card = self.getShoe().pop(0)
         card.setUsed()
         return card
