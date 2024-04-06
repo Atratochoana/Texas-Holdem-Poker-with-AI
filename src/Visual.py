@@ -19,6 +19,7 @@ class Visuals(ctk.CTk):
         self.geometry("1440x810")
         self.winnerWindow = None
         self.betWindow = None
+        self.foldWindow = None
 
         self.settingsButton = settingsButton(self, text="settings")
         self.settingsButton.grid(row=0,
@@ -83,14 +84,21 @@ class Visuals(ctk.CTk):
     def betCallBack(self):
         if self._gameRound == None:
             return
-            
+
         if self.betWindow == None:
             self.betWindow = betScreen(self)
 
         return
 
     def foldCallBack(self):
-        self.table.getPlayers()[0].fold()
+        if self._gameRound == None:
+            return
+
+        if self.foldWindow == None:
+            self.foldWindow = FoldScreen(self)
+
+        return
+        #self.table.getPlayers()[0].fold()
 
     def checkCallBack(self):
         self.table.getPlayers()[0].check()
@@ -575,4 +583,22 @@ class betScreen(ctk.CTkToplevel):
         balText = "Balance: " + str(balVal)
         self.master.info.balanceLabel.configure(text=balText)
         self.master.betWindow = None
+        self.destroy()
+
+
+class FoldScreen(ctk.CTkToplevel):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.geometry("200x200")
+        self.title("Fold")
+        self.label = ctk.CTkLabel(self, text="Are you sure you want to fold?")
+        self.label.pack(padx=20, pady=20)
+        self.button = ctk.CTkButton(self,
+                                    text="Confirm",
+                                    command=self.buttonCallBack)
+        self.button.pack(padx=20, pady=40)
+
+    def buttonCallBack(self):
+        self.master.foldCallBack()
         self.destroy()
