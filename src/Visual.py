@@ -16,7 +16,7 @@ class Visuals(ctk.CTk):
         self.table = table
         self.table._visuals = self
         self.title("Poker")
-        self.geometry("1440x810")
+        self.geometry("800x400")
         self.winnerWindow = None
         self.betWindow = None
         self.foldWindow = None

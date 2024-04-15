@@ -185,7 +185,8 @@ def evaluateHand(communityCards, player):
     
         
 
-    #chance to get a fullHouse - 3 of a kind and 2 of a kind
+    #chance to get a fullHouse - 3 of a kind and 2 of a kind3
+
     
     
 
