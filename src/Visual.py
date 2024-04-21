@@ -391,7 +391,6 @@ class settingsButton(ctk.CTkButton):
         dialog = ctk.CTkInputDialog(
             text="Action: int = bet, F = fold, C = check", title="cheater")
         text = dialog.get_input()
-        text = input("enter ting here:")
         if text == None:
             return
         if str(text).upper() == "F":
@@ -498,7 +497,7 @@ class betScreen(ctk.CTkToplevel):
             val = 100
         else:
             val = self.master._gameRound.lastBet
-        if self.master.table.getPlayers()[0].placeBet(val, 0) == False:
+        if self.master.table.getPlayers()[0].call(val) == False:
             return
 
         potText = self.master.info.potLabel.cget("text")
@@ -520,7 +519,7 @@ class betScreen(ctk.CTkToplevel):
         if self.master._gameRound.lastBet == 0:
             val = 100
         else:
-            val = math.floor(self.master._gameRound._pot / 4)
+            val = self.master._gameRound.lastBet + math.floor(self.master._gameRound._pot / 4)
         if self.master.table.getPlayers()[0].placeBet(val, 0) == False:
             return
 
@@ -543,7 +542,7 @@ class betScreen(ctk.CTkToplevel):
         if self.master._gameRound.lastBet == 0:
             val = 100
         else:
-            val = math.floor(self.master._gameRound._pot / 2)
+            val = self.master._gameRound.lastBet + math.floor(self.master._gameRound._pot / 2)
         if self.master.table.getPlayers()[0].placeBet(val, 0) == False:
             return
 

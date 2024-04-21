@@ -27,7 +27,7 @@ class GameRound():
 
         if bet == False:
             self.playersOut.append(player)
-            if len(self.playersOut) == (self._table._players - 1):
+            if len(self.playersOut) == (len(self._table._players) - 1):
                 self.calcWinner()
         else:
             self._pot += bet
@@ -48,6 +48,7 @@ class GameRound():
             self.nextPlayer = 0
         else:
             self.nextPlayer += 1
+            AI.playAction(self,self._table._players[self.nextPlayer])
 
         count = 0
         subCount = 0

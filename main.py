@@ -6,7 +6,8 @@ from src import Player
 from src import GameRound
 
 Shoe = CardManagement.Shoe(3)
-GameRound = GameRound.GameRound(0,None,Shoe)
+#Table = Table.Table(3)
+#GameRound = GameRound.GameRound(0, None, Shoe)
 
 player = Player.Player(
     "Test",
@@ -14,19 +15,20 @@ player = Player.Player(
     GameRound,
 )
 player._hand = [
-    CardManagement.Card("Heart", 14, "test", None),
-    CardManagement.Card("not heard", 9, "test", None)
+    CardManagement.Card("heart", 12, "test", None),
+    CardManagement.Card("heart", 13, "test", None)
 ]
 communityCard = [
-    CardManagement.Card("Heart", 13, "test", None),
-    CardManagement.Card("Heart", 12, "test", None),
-    CardManagement.Card("Heart", 10, "test", None),
+    CardManagement.Card("heart", 12, "test", None),
+    CardManagement.Card("heart", 9, "test", None),
+    CardManagement.Card("heart", 9, "test", None)
 ]
 
 Table = Table.Table(1)
 Table.createPlayer("self")
 
-AI.evaluateHand(communityCard, player)
+#AI.evaluateHand(communityCard, player)
+#AI.playAction(GameRound,player)
 
 GUI = Visual.Visuals(Table)
 GUI.attributes("-fullscreen", False)

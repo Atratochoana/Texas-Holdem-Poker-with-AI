@@ -27,6 +27,9 @@ class Table():
     def addPlayer(
         self, player
     ):  #cant autocreate due to them needing paramenters that cannot be autocreated
+        if len(self._players) >= 5:
+            print("Max number of players reached cannot add anymore")
+            return
         self._players.append(player)
         self._numPlayers += 1
         return

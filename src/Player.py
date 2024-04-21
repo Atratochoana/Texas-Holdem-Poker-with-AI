@@ -1,6 +1,6 @@
 class Player():
 
-    def __init__(self, name, balance,gameRound=None):
+    def __init__(self, name, balance, gameRound=None):
         self._name = name
         self._balance = balance
         self._hand = []
@@ -44,18 +44,20 @@ class Player():
         index = self._gameRound._table.getPlayers().index(self)
         if next == index:
             return True
+        print(
+            "Error action cannot take place due to it not being player's turn")
         return False
 
     def placeBet(self, Bet, previousBet):
         if self.checkNext() == False:
             return False
-        print(f"{self._name}: betted")
+        print(f"{self._name}: betted {Bet}")
         if Bet == 0 or type(Bet) != int:
             return False
 
         if Bet <= self._balance and Bet >= previousBet:
             self._balance -= Bet
-            self._gameRound.playerAction(Bet,self)
+            self._gameRound.playerAction(Bet, self)
             return True
         else:
             return False
@@ -63,7 +65,7 @@ class Player():
     def call(self, previousBet):
         if self.checkNext() == False:
             return False
-        print(f"{self._name}: called")
+        print(f"{self._name}: called {previousBet}")
         if self._balance <= previousBet:
             self._gameRound.playerAction(previousBet, self)
             return True
