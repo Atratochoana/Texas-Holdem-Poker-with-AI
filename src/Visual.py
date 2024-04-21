@@ -98,7 +98,6 @@ class Visuals(ctk.CTk):
             self.foldWindow = FoldScreen(self)
 
         return
-        #self.table.getPlayers()[0].fold()
 
     def checkCallBack(self):
         self.table.getPlayers()[0].check()
@@ -373,7 +372,6 @@ class addPlayer(ctk.CTkButton):
         dialog = ctk.CTkInputDialog(text="Enter the name of the Player",
                                     title="add Player")
         text = dialog.get_input()
-        #text = f"bot {len(self.master.table.getPlayers())}"
         self.master.table.createPlayer(text)
         print("\nNew player list:")
         for player in self.master.table._players:
